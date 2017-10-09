@@ -1,4 +1,4 @@
-package com.djdenpa.baker.baker;
+package com.djdenpa.baker;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.djdenpa.baker.baker;
+package com.djdenpa.baker;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     // Context of the app under test.
     Context appContext = InstrumentationRegistry.getTargetContext();
 
-    assertEquals("com.djdenpa.baker.baker", appContext.getPackageName());
+    assertEquals("com.djdenpa.baker", appContext.getPackageName());
   }
 }
