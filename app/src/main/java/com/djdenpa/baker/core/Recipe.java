@@ -38,7 +38,7 @@ public class Recipe {
       JSONArray jSteps = jRecipe.getJSONArray("steps");
       result.steps  = new LinkedList<>();
       for (int index = 0; index < jSteps.length(); index++){
-        JSONObject jStep = (JSONObject) jIngredients.get(index);
+        JSONObject jStep = (JSONObject) jSteps.get(index);
         result.steps.add(Step.fromJSON(jStep));
       }
       result.servings = jRecipe.getInt("servings");
