@@ -1,5 +1,18 @@
 <resources>
   <string name="app_name">Baker</string>
-  <string name="network_error_message">A network error has occured. Please try again later.</string>
+  <string name="recipe_list_header">Recipes</string>
+  recipe_list_header
+  <string name="menu_debug_data">Randomize</string>
+
+  <string name="recipe_servings_header">Servings: %1$d</string>
+
+  <string name="recipes_header">Recipes</string>
+
+  <string name="ingredients_header">Ingredients</string>
+  <string name="steps_header">Steps</string>
+
+  <string name="cannot_load_recipe_error">Unable to load this recipe.</string>
+
+  <string name="network_error_message">A network error has occurred. Please try again later.</string>
 
 </resources>

@@ -1,5 +1,7 @@
 package com.djdenpa.baker.ui.adapters;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -16,8 +18,10 @@ import java.util.List;
 
 public class RecipeListItem extends AbstractItem<RecipeListItem, RecipeListItem.ViewHolder> {
   public Recipe mRecipe;
+  public Context mContext;
 
-  public RecipeListItem(Recipe recipe){
+  public RecipeListItem(Recipe recipe, Context context){
+    mContext = context;
     mRecipe = recipe;
   }
 
@@ -43,15 +47,17 @@ public class RecipeListItem extends AbstractItem<RecipeListItem, RecipeListItem.
     super.bindView(viewHolder, payloads);
 
     viewHolder.mName.setText(mRecipe.name);
+    viewHolder.mServings.setText(String.format(mContext.getString(R.string.recipe_servings_header), mRecipe.servings) );
   }
 
   protected static class ViewHolder extends RecyclerView.ViewHolder {
     protected TextView mName;
-    protected TextView description;
+    protected TextView mServings;
 
     public ViewHolder(View view) {
       super(view);
       this.mName = view.findViewById(R.id.tv_recipe_name);
+      this.mServings = view.findViewById(R.id.tv_servings);
     }
   }
 }
