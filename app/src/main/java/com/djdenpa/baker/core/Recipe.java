@@ -17,8 +17,42 @@ public class Recipe implements Parcelable {
 
   public int id;
   public String name;
-  public LinkedList<Ingredient> ingredients;
-  public LinkedList<Step> steps;
+  public String ingredientsJSON;
+  public LinkedList<Ingredient> mIngredients = null;
+  public LinkedList<Ingredient> ingredients(){
+    if (mIngredients == null) {
+      mIngredients = new LinkedList<>();
+      JSONArray jIngredients;
+      try {
+        jIngredients = new JSONArray(ingredientsJSON);
+        for (int index = 0; index < jIngredients.length(); index++) {
+          JSONObject jIngredient = (JSONObject) jIngredients.get(index);
+          mIngredients.add(Ingredient.fromJSON(jIngredient));
+        }
+      } catch (JSONException e) {
+        e.printStackTrace();
+      }
+    }
+    return mIngredients;
+  }
+  public String stepsJSON;
+  public LinkedList<Step> mSteps = null;
+  public LinkedList<Step> steps(){
+    if (mSteps == null) {
+      mSteps = new LinkedList<>();
+      JSONArray jSteps;
+      try {
+        jSteps = new JSONArray(stepsJSON);
+        for (int index = 0; index < jSteps.length(); index++) {
+          JSONObject jIngredient = (JSONObject) jSteps.get(index);
+          mSteps.add(Step.fromJSON(jIngredient));
+        }
+      } catch (JSONException e) {
+        e.printStackTrace();
+      }
+    }
+    return mSteps;
+  }
   public Integer servings;
 
   //public String image;
@@ -30,10 +64,8 @@ public class Recipe implements Parcelable {
   protected Recipe(Parcel in) {
     id = in.readInt();
     name = in.readString();
-    ingredients = new LinkedList<>();
-    in.readTypedList(ingredients, Ingredient.CREATOR);
-    steps = new LinkedList<>();
-    in.readTypedList(steps, Step.CREATOR);
+    ingredientsJSON = in.readString();
+    stepsJSON = in.readString();
     servings = in.readInt();
   }
 
@@ -46,8 +78,8 @@ public class Recipe implements Parcelable {
   public void writeToParcel(Parcel parcel, int i) {
     parcel.writeInt(id);
     parcel.writeString(name);
-    parcel.writeList(ingredients);
-    parcel.writeList(steps);
+    parcel.writeString(ingredientsJSON);
+    parcel.writeString(stepsJSON);
     parcel.writeInt(servings);
   }
 
@@ -68,18 +100,8 @@ public class Recipe implements Parcelable {
     try {
       result.id = jRecipe.getInt("id");
       result.name = jRecipe.getString("name");
-      JSONArray jIngredients = jRecipe.getJSONArray("ingredients");
-      result.ingredients = new LinkedList<>();
-      for (int index = 0; index < jIngredients.length(); index++){
-        JSONObject jIngredient = (JSONObject) jIngredients.get(index);
-        result.ingredients.add(Ingredient.fromJSON(jIngredient));
-      }
-      JSONArray jSteps = jRecipe.getJSONArray("steps");
-      result.steps  = new LinkedList<>();
-      for (int index = 0; index < jSteps.length(); index++){
-        JSONObject jStep = (JSONObject) jSteps.get(index);
-        result.steps.add(Step.fromJSON(jStep));
-      }
+      result.ingredientsJSON = jRecipe.getString("ingredients");
+      result.stepsJSON = jRecipe.getString("steps");
       result.servings = jRecipe.getInt("servings");
       //result.image
     } catch (JSONException e) {

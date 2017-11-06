@@ -74,13 +74,10 @@ public class RecipeListFragment extends Fragment {
       public boolean onClick(View v, IAdapter adapter, IItem item, int position) {
         Recipe selectedRecipe = ((RecipeListItem) mFastAdapter.getAdapterItem(position)).mRecipe;
 
-
-        Debug.startMethodTracing("loadSteps");
-
         Class destinationClass = RecipeStepsActivity.class;
         Intent intentToStartDetailActivity = new Intent(mContext, destinationClass);
 
-        //intentToStartDetailActivity.putExtra(RecipeStepsActivity.RECIPE_EXTRA, selectedRecipe);
+        intentToStartDetailActivity.putExtra(RecipeStepsActivity.RECIPE_EXTRA, selectedRecipe);
         mContext.startActivity(intentToStartDetailActivity);
 
         return true;
@@ -143,7 +140,7 @@ public class RecipeListFragment extends Fragment {
 
   @Override
   public void onSaveInstanceState(Bundle outState) {
-    super.onSaveInstanceState(outState);
+    return;
   }
 
   public void BindRandomData() {

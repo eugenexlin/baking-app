@@ -18,11 +18,14 @@ import java.util.List;
 
 public class RecipeListItem extends AbstractItem<RecipeListItem, RecipeListItem.ViewHolder> {
   public Recipe mRecipe;
-  public Context mContext;
+  //public Context mContext;
+  public String servingsHeader;
 
   public RecipeListItem(Recipe recipe, Context context){
-    mContext = context;
+    //SAVE RESOURCES INSTEAD OF CONTEXT FOR SPED OPTIMIZATION
+    //mContext = context;
     mRecipe = recipe;
+    servingsHeader = context.getString(R.string.recipe_servings_header);
   }
 
   @Override
@@ -47,7 +50,7 @@ public class RecipeListItem extends AbstractItem<RecipeListItem, RecipeListItem.
     super.bindView(viewHolder, payloads);
 
     viewHolder.mName.setText(mRecipe.name);
-    viewHolder.mServings.setText(String.format(mContext.getString(R.string.recipe_servings_header), mRecipe.servings) );
+    viewHolder.mServings.setText(String.format(servingsHeader, mRecipe.servings) );
   }
 
   protected static class ViewHolder extends RecyclerView.ViewHolder {

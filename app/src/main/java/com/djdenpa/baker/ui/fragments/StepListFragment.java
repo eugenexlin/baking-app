@@ -33,8 +33,6 @@ public class StepListFragment extends Fragment {
 
     mErrorMessage  = rootView.findViewById(R.id.tv_error_message);
 
-    Debug.stopMethodTracing();
-
     return rootView;
   }
 
