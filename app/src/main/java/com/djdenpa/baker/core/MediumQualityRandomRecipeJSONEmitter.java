@@ -96,22 +96,33 @@ public class MediumQualityRandomRecipeJSONEmitter {
     JSONObject jRecipe = new JSONObject();
 
     try {
+      jRecipe.put("measure", units[rand.nextInt(units.length)]);
+
+      double quantity = 0;
       if (rand.nextInt(10) < 5){
-        jRecipe.put("quantity", rand.nextInt(5));
+        quantity = rand.nextInt(5);
       }else{
 
         if (rand.nextInt(10) < 5){
-          jRecipe.put("quantity", 0.25 * rand.nextInt(12));
+          quantity =0.25 * rand.nextInt(12);
         }else{
 
           if (rand.nextInt(10) < 5){
-            jRecipe.put("quantity", rand.nextInt(1000));
+            quantity = rand.nextInt(1000);
+            jRecipe.put("measure", "G");
           }else{
+
+            quantity =0.3333 * rand.nextInt(9);
 
           }
         }
       }
-      jRecipe.put("measure", units[rand.nextInt(units.length)]);
+
+      if (quantity <= 0){
+        quantity = 1 + rand.nextInt(9);
+      }
+
+      jRecipe.put("quantity", quantity);
       jRecipe.put("ingredient", GenerateStringPhrase(3, false));
 
 

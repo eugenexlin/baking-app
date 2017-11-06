@@ -12,7 +12,7 @@
   <fragment
       android:id="@+id/step_list_fragment"
       android:name="com.djdenpa.baker.ui.fragments.StepListFragment"
-      android:layout_width="400dp"
+      android:layout_width="@dimen/step_list_width"
       android:layout_height="match_parent" />
 
   <View

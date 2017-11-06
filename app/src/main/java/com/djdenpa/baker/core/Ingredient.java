@@ -63,6 +63,66 @@ public class Ingredient implements Parcelable {
   public Ingredient(){
   }
 
+  public String readableQuantity(){
+    //first some known values??
+    //perhaps this can be replaced with a smart fraction converter someday.
+    //this should only be done for small stuff like cups and spoons.
+    //so values less than like 10
+    if (quantity < 10){
+      if (areAboutEqual(quantity, 0.5)){
+        return "1/2";
+      }
+      if (areAboutEqual(quantity, 1.5)){
+        return "1 1/2";
+      }
+      if (areAboutEqual(quantity, 2.5)){
+        return "2 1/2";
+      }
+      if (areAboutEqual(quantity, 0.25)){
+        return "1/4";
+      }
+      if (areAboutEqual(quantity, 0.75)){
+        return "3/4";
+      }
+      if (areAboutEqual(quantity, 1.25)){
+        return "1 1/4";
+      }
+      if (areAboutEqual(quantity, 1.75)){
+        return "1 3/4";
+      }
+      if (areAboutEqual(quantity, 2.25)){
+        return "2 1/4";
+      }
+      if (areAboutEqual(quantity, 2.75)){
+        return "2 3/4";
+      }
+      if (areAboutEqual(quantity, 0.3333)){
+        return "1/3";
+      }
+      if (areAboutEqual(quantity, 0.6666)){
+        return "2/3";
+      }
+      if (areAboutEqual(quantity, 1.3333)){
+        return "1 1/3";
+      }
+      if (areAboutEqual(quantity, 1.6666)){
+        return "1 2/3";
+      }
+      if (areAboutEqual(quantity, 2.3333)){
+        return "2 1/3";
+      }
+      if (areAboutEqual(quantity, 2.6666)){
+        return "2 2/3";
+      }
+    }
+
+    if (noSignificantDecimals(quantity)){
+      return String.valueOf((int)quantity);
+    }
+
+    return String.valueOf(quantity);
+  }
+
   public static Ingredient fromJSON(JSONObject jIngredient){
     Ingredient result = new Ingredient();
     try {
@@ -73,5 +133,14 @@ public class Ingredient implements Parcelable {
       e.printStackTrace();
     }
     return result;
+  }
+
+  //compare numbers
+  private boolean areAboutEqual(double a, double b){
+    return (Math.abs(a - b) < 0.01);
+  }
+  //compare numbers
+  private boolean noSignificantDecimals(double a){
+    return (((int)(a*10)) % 10) == 0;
   }
 }

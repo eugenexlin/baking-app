@@ -4,11 +4,14 @@
 
   <dimen name="recipe_card_height">300dp</dimen>
   <dimen name="recipe_card_text_padding">15dp</dimen>
+
   <dimen name="recipe_image_height">150dp</dimen>
 
   <dimen name="recipe_card_header_size">28sp</dimen>
 
   <dimen name="normal_text_size">20sp</dimen>
   <dimen name="sub_important_text_size">18sp</dimen>
+
+  <dimen name="step_list_width">500dp</dimen>
 
 </resources>

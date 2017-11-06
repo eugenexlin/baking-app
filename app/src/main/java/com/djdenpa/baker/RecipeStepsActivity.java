@@ -41,7 +41,7 @@ public class RecipeStepsActivity extends AppCompatActivity {
     }
 
     setTitle(mRecipe.name);
-
+    mStepListFragment.BindRecipe(mRecipe);
 
   }
 

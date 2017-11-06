@@ -1,56 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-  <TextView
-      android:id="@+id/tv_error_message"
+  <LinearLayout
+      android:orientation="vertical"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:padding="@dimen/standard_padding"
-      android:text="@string/network_error_message"
-      android:textSize="@dimen/error_text_size"
-      android:textColor="#f00"
-      android:background="@color/white_accent_background"
-      android:visibility="gone"
-      android:elevation="3dp"/>
+      android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_error_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/standard_padding"
+        android:text="@string/network_error_message"
+        android:textSize="@dimen/error_text_size"
+        android:textColor="#f00"
+        android:background="@color/white_accent_background"
+        android:visibility="gone"
+        android:elevation="3dp"/>
 
 
-  <TextView
-      android:id="@+id/tv_ingredients"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:padding="16dp"
-      android:text="@string/ingredients_header"
-      android:textSize="@dimen/header_size"
-      android:textColor="@color/colorAccent"
-      />
+    <TextView
+        android:id="@+id/tv_ingredients"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/ingredients_header"
+        android:textSize="@dimen/header_size"
+        android:textColor="@color/colorAccent"
+        />
 
 
-  <ListView
-      android:id="@+id/lv_ingredients"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:scrollbars="none"
-      android:padding="2dp"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_ingredients"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:padding="2dp"/>
 
-  <TextView
-      android:id="@+id/tv_steps"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:padding="16dp"
-      android:text="@string/steps_header"
-      android:textSize="@dimen/header_size"
-      android:textColor="@color/colorAccent"
-      />
+    <TextView
+        android:id="@+id/tv_steps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/steps_header"
+        android:textSize="@dimen/header_size"
+        android:textColor="@color/colorAccent"
+        />
 
-  <ListView
-      android:id="@+id/lv_steps"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:scrollbars="none"
-      android:padding="2dp"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_steps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:padding="2dp"/>
 
 
-</LinearLayout>
+  </LinearLayout>
+
+</ScrollView>

@@ -13,6 +13,12 @@
   <dimen name="recipe_card_text_padding">10dp</dimen>
   <dimen name="recipe_image_height">100dp</dimen>
 
+  <dimen name="step_card_text_padding">8dp</dimen>
+
+  <dimen name="step_card_height">100dp</dimen>
+  <dimen name="step_image_width">120dp</dimen>
+  <dimen name="step_card_fade">24dp</dimen>
+
   <dimen name="recipe_step_card_min_height">80dp</dimen>
 
 

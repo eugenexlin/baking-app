@@ -6,6 +6,21 @@
 
   <string name="recipe_servings_header">Servings: %1$d</string>
 
+  <!-- we need to leave out space, because there are cases like
+   1 cup
+   then there are cases like
+   200g
+  -->
+  <string name="ingredient_template">%1$s %2$s</string>
+
+  <string name="measure_text_unknown">%1$s %2$s</string>
+  <string name="measure_text_gram">%1$sg</string>
+  <string name="measure_text_ounce">%1$soz</string>
+  <string name="measure_text_unit">%1$s</string>
+  <string name="measure_text_cup">%1$s cup</string>
+  <string name="measure_text_teaspoon">%1$s teaspoon</string>
+  <string name="measure_text_tablespoon">%1$s tablespoon</string>
+
   <string name="recipes_header">Recipes</string>
 
   <string name="ingredients_header">Ingredients</string>
@@ -14,5 +29,7 @@
   <string name="cannot_load_recipe_error">Unable to load this recipe.</string>
 
   <string name="network_error_message">A network error has occurred. Please try again later.</string>
+
+  <string name="step_thumbnail">Step Thumbnail</string>
 
 </resources>
