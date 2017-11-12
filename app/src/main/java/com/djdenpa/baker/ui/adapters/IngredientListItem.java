@@ -26,6 +26,8 @@ public class IngredientListItem extends AbstractItem<IngredientListItem, Ingredi
     mIngredient = recipe;
     mIngredientTextTemplate = context.getString(R.string.ingredient_template);
 
+    boolean canBePlural = true;
+
     switch(mIngredient.measure.toUpperCase()){
       case "CUP":
         mIngredientMeasureTemplate = context.getString(R.string.measure_text_cup);
@@ -38,18 +40,27 @@ public class IngredientListItem extends AbstractItem<IngredientListItem, Ingredi
         break;
       case "G":
         mIngredientMeasureTemplate = context.getString(R.string.measure_text_gram);
+        canBePlural = false;
         break;
       case "OZ":
         mIngredientMeasureTemplate = context.getString(R.string.measure_text_ounce);
+        canBePlural = false;
         break;
       case "UNIT":
       case "K":
         mIngredientMeasureTemplate = context.getString(R.string.measure_text_unit);
+        canBePlural = false;
         break;
       default:
         mIngredientMeasureTemplate = context.getString(R.string.measure_text_unknown);
+        canBePlural = false;
         break;
+    }
 
+    //CHECK IF NEEDS "s"
+    //this should probably be only for locales that like just adding s at the end..
+    if (canBePlural && mIngredient.quantity != 1){
+      mIngredientMeasureTemplate = mIngredientMeasureTemplate + "s";
     }
   }
 

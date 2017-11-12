@@ -54,7 +54,7 @@ public class MediumQualityRandomRecipeJSONEmitter {
   public static JSONArray GenerateSomeLongStepList(){
     JSONArray jSteps = new JSONArray();
 
-    int recipeNum = rand.nextInt(15);
+    int recipeNum = rand.nextInt(25) + 5;
 
     for (int i = 1; i <= recipeNum; i++){
       jSteps.put(GenerateOneStep(i));
@@ -65,24 +65,24 @@ public class MediumQualityRandomRecipeJSONEmitter {
 
   public static JSONObject GenerateOneStep(int id){
 
-    JSONObject jRecipe = new JSONObject();
+    JSONObject jStep = new JSONObject();
 
     try {
-      jRecipe.put("id",id);
-      jRecipe.put("name", GenerateStringPhrase(3, true));
-
+      jStep.put("id",id);
+      jStep.put("shortDescription", GenerateStringPhrase(7, false));
+      jStep.put("description", GenerateStringPhrase(50, false));
 
     } catch (JSONException e) {
       e.printStackTrace();
     }
 
-    return jRecipe;
+    return jStep;
   }
 
   public static JSONArray GenerateSomeLongIngredientList(){
     JSONArray jIngredients = new JSONArray();
 
-    int recipeNum = rand.nextInt(15);
+    int recipeNum = rand.nextInt(10) + 5;
 
     for (int i = 1; i <= recipeNum; i++){
       jIngredients.put(GenerateOneIngredient());

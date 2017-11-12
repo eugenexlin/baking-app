@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.djdenpa.baker.R;
@@ -46,6 +47,7 @@ public class RecipeListFragment extends Fragment {
   Context mContext;
   RecyclerView mRVRecipes;
   FastItemAdapter mFastAdapter;
+  ProgressBar mPBLoading;
 
   TextView mErrorMessage;
 
@@ -61,6 +63,7 @@ public class RecipeListFragment extends Fragment {
     mContext = getContext();
 
     mRVRecipes = rootView.findViewById(R.id.rv_recipe_list);
+    mPBLoading = rootView.findViewById(R.id.pb_loading);
 
     mErrorMessage  = rootView.findViewById(R.id.tv_error_message);
 
@@ -85,6 +88,8 @@ public class RecipeListFragment extends Fragment {
     });
 
     mRVRecipes.setAdapter(mFastAdapter);
+
+    showLoadingBar();
 
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(RecipeFetcher.UDACITY_URL)
@@ -112,18 +117,27 @@ public class RecipeListFragment extends Fragment {
 
           mFastAdapter.add(result);
         }
+        hideLoadingBar();
 
       }
 
       @Override
       public void onFailure(Call<String> call, Throwable t) {
         Log.d("ERROR", t.getMessage());
+        hideLoadingBar();
       }
     });
 
 
     return rootView;
 
+  }
+
+  private void showLoadingBar(){
+    mPBLoading.setVisibility(View.VISIBLE);
+  }
+  private void hideLoadingBar(){
+    mPBLoading.setVisibility(View.GONE);
   }
 
   private static int calculateNoOfColumns(Context context) {
@@ -146,6 +160,8 @@ public class RecipeListFragment extends Fragment {
   public void BindRandomData() {
     mFastAdapter.clear();
 
+    showLoadingBar();
+
     JSONArray jRecipes = MediumQualityRandomRecipeJSONEmitter.GenerateSomeLongRecipeList();
     List<RecipeListItem> result = new ArrayList<>();
     try {
@@ -159,6 +175,8 @@ public class RecipeListFragment extends Fragment {
     }
 
     mFastAdapter.add(result);
+
+    hideLoadingBar();
   }
 
 }

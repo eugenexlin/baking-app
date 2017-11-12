@@ -27,6 +27,7 @@
   <string name="steps_header">Steps</string>
 
   <string name="cannot_load_recipe_error">Unable to load this recipe.</string>
+  <string name="cannot_load_step_error">Unable to load this step.</string>
 
   <string name="network_error_message">A network error has occurred. Please try again later.</string>
 

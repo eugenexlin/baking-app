@@ -1,6 +1,7 @@
 package com.djdenpa.baker.ui.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,11 +14,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.djdenpa.baker.R;
+import com.djdenpa.baker.RecipeStepsActivity;
 import com.djdenpa.baker.core.Ingredient;
 import com.djdenpa.baker.core.Recipe;
 import com.djdenpa.baker.core.Step;
 import com.djdenpa.baker.ui.adapters.IngredientListItem;
+import com.djdenpa.baker.ui.adapters.RecipeListItem;
 import com.djdenpa.baker.ui.adapters.StepListItem;
+import com.mikepenz.fastadapter.IAdapter;
+import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter;
 
 import java.util.ArrayList;
@@ -30,11 +35,32 @@ import java.util.List;
 public class StepListFragment extends Fragment {
 
   private Context mContext;
+  private OnStepClickListener mCallback;
   private TextView mErrorMessage;
   private FastItemAdapter mIngredientFastAdapter;
   private FastItemAdapter mStepFastAdapter;
   private RecyclerView mRVIngredients;
   private RecyclerView mRVSteps;
+
+  // OnImageClickListener interface, calls a method in the host activity named onImageSelected
+  public interface OnStepClickListener {
+    void onStepClicked(Step selectedStep);
+  }
+
+  // Override onAttach to make sure that the container activity has implemented the callback
+  @Override
+  public void onAttach(Context context) {
+    super.onAttach(context);
+
+    // This makes sure that the host activity has implemented the callback interface
+    // If not, it throws an exception
+    try {
+      mCallback = (OnStepClickListener) context;
+    } catch (ClassCastException e) {
+      throw new ClassCastException(context.toString()
+              + " must implement OnStepClickListener");
+    }
+  }
 
   public StepListFragment() {
   }
@@ -66,6 +92,15 @@ public class StepListFragment extends Fragment {
     };
     mRVSteps.setLayoutManager(stepsLayoutManager);
     mStepFastAdapter = new FastItemAdapter();
+    mStepFastAdapter.withOnClickListener(new FastItemAdapter.OnClickListener() {
+      @Override
+      public boolean onClick(View v, IAdapter adapter, IItem item, int position) {
+        Step selectedStep = ((StepListItem) mStepFastAdapter.getAdapterItem(position)).mStep;
+
+        mCallback.onStepClicked(selectedStep);
+        return true;
+      }
+    });
     mRVSteps.setAdapter(mStepFastAdapter);
 
 
@@ -80,7 +115,7 @@ public class StepListFragment extends Fragment {
     mErrorMessage.setText(errorMessage);
   }
 
-  public void BindRecipe(Recipe mRecipe) {
+  public void bindRecipe(Recipe mRecipe) {
 
     //bind ingredients
     mIngredientFastAdapter.clear();
@@ -106,6 +141,9 @@ public class StepListFragment extends Fragment {
     }
     mStepFastAdapter.add(steps);
 
+  }
 
+  public Step getStepByPosition(int position){
+    return ((StepListItem)mStepFastAdapter.getItem(position)).mStep;
   }
 }
