@@ -1,15 +1,16 @@
 package com.djdenpa.baker.ui.adapters;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.TextView;
 
 import com.djdenpa.baker.R;
 import com.djdenpa.baker.core.Ingredient;
-import com.djdenpa.baker.core.Recipe;
+import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
+import com.mikepenz.fastadapter.listeners.ClickEventHook;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ import java.util.List;
 
 public class IngredientListItem extends AbstractItem<IngredientListItem, IngredientListItem.ViewHolder> {
   public Ingredient mIngredient;
+  public boolean mChecked = false;
   public String mIngredientTextTemplate;
   public String mIngredientMeasureTemplate;
 
@@ -88,6 +90,7 @@ public class IngredientListItem extends AbstractItem<IngredientListItem, Ingredi
 
     String measureText = String.format(mIngredientMeasureTemplate, mIngredient.readableQuantity(), mIngredient.measure.toLowerCase());
     viewHolder.mCBIngredient.setText(String.format(mIngredientTextTemplate, measureText, mIngredient.ingredient));
+    viewHolder.mCBIngredient.setChecked(mChecked);
   }
 
   protected static class ViewHolder extends RecyclerView.ViewHolder {
@@ -98,4 +101,21 @@ public class IngredientListItem extends AbstractItem<IngredientListItem, Ingredi
       this.mCBIngredient = view.findViewById(R.id.cb_ingredient);
     }
   }
+
+  public static class CheckBoxClickEvent extends ClickEventHook<IngredientListItem> {
+    @Override
+    public void onClick(View v, int position, FastAdapter<IngredientListItem> fastAdapter, IngredientListItem item) {
+      CheckBox cb = v.findViewById(R.id.cb_ingredient);
+      item.mChecked = cb.isChecked();
+    }
+
+    @Override
+    public View onBind(@NonNull RecyclerView.ViewHolder viewHolder) {
+      if (viewHolder instanceof IngredientListItem.ViewHolder) {
+        return ((IngredientListItem.ViewHolder) viewHolder).mCBIngredient;
+      }
+      return null;
+    }
+  }
+
 }

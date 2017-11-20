@@ -16,7 +16,6 @@ import com.djdenpa.baker.ui.fragments.StepDetailFragment;
 public class StepDetailActivity extends AppCompatActivity {
 
   public static final String STEP_EXTRA = "StepDetailActivity_STEP_EXTRA";
-  private StepDetailFragment mStepDetailFragment;
   private Step mStep;
 
   @Override
@@ -33,15 +32,15 @@ public class StepDetailActivity extends AppCompatActivity {
     }
 
     FragmentManager fm = getSupportFragmentManager();
-    mStepDetailFragment = (StepDetailFragment) fm.findFragmentById(R.id.step_detail_fragment);
+    StepDetailFragment stepDetailFragment = (StepDetailFragment) fm.findFragmentById(R.id.step_detail_fragment);
 
     if (mStep == null){
-      mStepDetailFragment.displayError(getString(R.string.cannot_load_recipe_error));
+      stepDetailFragment.displayError(getString(R.string.cannot_load_recipe_error));
       return;
     }
 
     setTitle(mStep.shortDescription);
-    mStepDetailFragment.bindStep(mStep);
+    stepDetailFragment.bindStep(mStep);
 
   }
 

@@ -1,8 +1,8 @@
 package com.djdenpa.baker.ui.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,15 +14,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.djdenpa.baker.R;
-import com.djdenpa.baker.RecipeStepsActivity;
 import com.djdenpa.baker.core.Ingredient;
 import com.djdenpa.baker.core.Recipe;
 import com.djdenpa.baker.core.Step;
 import com.djdenpa.baker.ui.adapters.IngredientListItem;
-import com.djdenpa.baker.ui.adapters.RecipeListItem;
 import com.djdenpa.baker.ui.adapters.StepListItem;
+import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IAdapter;
-import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter;
 
 import java.util.ArrayList;
@@ -30,17 +28,24 @@ import java.util.List;
 
 /**
  * Created by denpa on 10/29/2017.
+ *
+ * for fast adapter ingredients.
+ * contains some checkbox shenanigans.
  */
 
 public class StepListFragment extends Fragment {
 
+  private static final String INGREDIENT_CHECK_STATE = "StepListFragment_INGREDIENT_CHECK_STATE";
+
   private Context mContext;
   private OnStepClickListener mCallback;
   private TextView mErrorMessage;
-  private FastItemAdapter mIngredientFastAdapter;
-  private FastItemAdapter mStepFastAdapter;
+  private FastItemAdapter<IngredientListItem> mIngredientFastAdapter;
+  private FastItemAdapter<StepListItem> mStepFastAdapter;
   private RecyclerView mRVIngredients;
   private RecyclerView mRVSteps;
+
+  private boolean[] mIngredientSelection;
 
   // OnImageClickListener interface, calls a method in the host activity named onImageSelected
   public interface OnStepClickListener {
@@ -67,7 +72,7 @@ public class StepListFragment extends Fragment {
 
   @Nullable
   @Override
-  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
     View rootView = inflater.inflate(R.layout.fragment_recipe_steps, container, false);
     mContext = getContext();
@@ -80,7 +85,13 @@ public class StepListFragment extends Fragment {
       }
     };
     mRVIngredients.setLayoutManager(ingredientsLayoutManager);
-    mIngredientFastAdapter = new FastItemAdapter();
+
+    mIngredientFastAdapter = new FastItemAdapter<>();
+    //configure our fastAdapter
+
+    mIngredientFastAdapter.withSelectable(true);
+    mIngredientFastAdapter.withEventHook(new IngredientListItem.CheckBoxClickEvent());
+
     mRVIngredients.setAdapter(mIngredientFastAdapter);
 
     mRVSteps = rootView.findViewById(R.id.rv_steps);
@@ -91,11 +102,11 @@ public class StepListFragment extends Fragment {
       }
     };
     mRVSteps.setLayoutManager(stepsLayoutManager);
-    mStepFastAdapter = new FastItemAdapter();
-    mStepFastAdapter.withOnClickListener(new FastItemAdapter.OnClickListener() {
+    mStepFastAdapter = new FastItemAdapter<>();
+    mStepFastAdapter.withOnClickListener(new FastItemAdapter.OnClickListener<StepListItem>() {
       @Override
-      public boolean onClick(View v, IAdapter adapter, IItem item, int position) {
-        Step selectedStep = ((StepListItem) mStepFastAdapter.getAdapterItem(position)).mStep;
+      public boolean onClick(View v, IAdapter<StepListItem> adapter, StepListItem item, int position) {
+        Step selectedStep =  mStepFastAdapter.getAdapterItem(position).mStep;
 
         mCallback.onStepClicked(selectedStep);
         return true;
@@ -103,11 +114,27 @@ public class StepListFragment extends Fragment {
     });
     mRVSteps.setAdapter(mStepFastAdapter);
 
-
+    if(savedInstanceState != null){
+      if (savedInstanceState.containsKey(INGREDIENT_CHECK_STATE)){
+        mIngredientSelection = savedInstanceState.getBooleanArray(INGREDIENT_CHECK_STATE);
+      }
+    }
 
     mErrorMessage  = rootView.findViewById(R.id.tv_error_message);
 
     return rootView;
+  }
+
+  @Override
+  public void onSaveInstanceState(@NonNull Bundle outState) {
+    mIngredientSelection = new boolean[mIngredientFastAdapter.getItemCount()];
+    for (int i = 0; i < mIngredientFastAdapter.getItemCount(); i++){
+      IngredientListItem ingredientItem = mIngredientFastAdapter.getItem(i);
+      mIngredientSelection[i] = ingredientItem.mChecked;
+    }
+    outState.putBooleanArray(INGREDIENT_CHECK_STATE, mIngredientSelection);
+
+    super.onSaveInstanceState(outState);
   }
 
   public void displayError(String errorMessage){
@@ -127,7 +154,13 @@ public class StepListFragment extends Fragment {
     } catch (Exception e) {
       Log.d("ERROR", e.getMessage());
     }
+    if (mIngredientSelection != null){
+      for(int i = 0; i < Math.min(ingredients.size(),mIngredientSelection.length); i++){
+        ingredients.get(i).mChecked = mIngredientSelection[i];
+      }
+    }
     mIngredientFastAdapter.add(ingredients);
+
 
     //bind steps
     mStepFastAdapter.clear();

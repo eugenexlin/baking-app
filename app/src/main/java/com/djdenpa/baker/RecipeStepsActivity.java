@@ -3,6 +3,7 @@ package com.djdenpa.baker;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.djdenpa.baker.core.Recipe;
@@ -18,9 +19,9 @@ public class RecipeStepsActivity extends AppCompatActivity implements StepListFr
 
   public static final String RECIPE_EXTRA = "StepListFragment_RECIPE_EXTRA";
 
-  StepListFragment mStepListFragment;
-  StepDetailFragment mStepDetailFragment;
   Recipe mRecipe = null;
+  private StepListFragment mStepListFragment;
+  private StepDetailFragment mStepDetailFragment;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +47,30 @@ public class RecipeStepsActivity extends AppCompatActivity implements StepListFr
     setTitle(mRecipe.name);
     mStepListFragment.bindRecipe(mRecipe);
 
-    //for tablets. we will have the step detail fragment on the same page.
     mStepDetailFragment = (StepDetailFragment) fm.findFragmentById(R.id.step_detail_fragment);
+
   }
 
+  @Override
+  protected void onSaveInstanceState(Bundle outState) {
+
+    //There is some stink where on orientation change, the fragment is stuck in the manager
+    // Then we get some exception where fragment is not attached..
+    // after many hours, it seems the cleanest way is to never save this fragment into state.
+    if (mStepDetailFragment != null) {
+      FragmentManager fm = getSupportFragmentManager();
+      FragmentTransaction ft = fm.beginTransaction();
+      ft.remove(mStepDetailFragment);
+      ft.commit();
+    }
+
+    super.onSaveInstanceState(outState);
+  }
 
   @Override
   public void onStepClicked(Step selectedStep) {
 
-    if (mStepDetailFragment != null){
+    if (mStepDetailFragment != null && mStepDetailFragment.isAdded()){
       //has detail fragment
       mStepDetailFragment.bindStep(selectedStep);
     }else{
