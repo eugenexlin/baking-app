@@ -4,8 +4,10 @@
   <color name="colorPrimaryDark">#2a6624</color>
   <color name="colorAccent">#d27d59</color>
 
+  <color name="normal_text">#000000</color>
   <color name="sub_important_text">#676966</color>
 
+  <color name="button_text">#ffffff</color>
 
   <color name="white_accent_background">#ccffffff</color>
 

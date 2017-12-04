@@ -60,7 +60,12 @@ public class Step implements Parcelable {
     try {
       result.id = jStep.getInt("id");
       result.shortDescription = jStep.getString("shortDescription");
-      result.description = jStep.getString("description");
+      String description = jStep.getString("description");
+
+      //Design choice that I want to remove these numbers.
+      description = description.replaceAll("^\\d+\\.\\s+", "");
+
+      result.description = description;
       result.videoURL = jStep.getString("videoURL");
       result.thumbnailURL = jStep.getString("thumbnailURL");
     } catch (JSONException e) {

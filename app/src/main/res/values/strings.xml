@@ -21,6 +21,11 @@
   <string name="measure_text_teaspoon">%1$s teaspoon</string>
   <string name="measure_text_tablespoon">%1$s tablespoon</string>
 
+  <string name="step_detail_title_template">Step %1$s</string>
+
+  <string name="next_step_text">Next Step</string>
+  <string name="full_screen_text">Full Screen</string>
+
   <string name="recipes_header">Recipes</string>
 
   <string name="ingredients_header">Ingredients</string>

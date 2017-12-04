@@ -18,7 +18,7 @@ public class Recipe implements Parcelable {
   public int id;
   public String name;
   public String ingredientsJSON;
-  public LinkedList<Ingredient> mIngredients = null;
+  private LinkedList<Ingredient> mIngredients = null;
   public LinkedList<Ingredient> ingredients(){
     if (mIngredients == null) {
       mIngredients = new LinkedList<>();
@@ -36,7 +36,7 @@ public class Recipe implements Parcelable {
     return mIngredients;
   }
   public String stepsJSON;
-  public LinkedList<Step> mSteps = null;
+  private LinkedList<Step> mSteps = null;
   public LinkedList<Step> steps(){
     if (mSteps == null) {
       mSteps = new LinkedList<>();

@@ -9,6 +9,9 @@
 
   <dimen name="header_size">32sp</dimen>
 
+  <dimen name="button_height">48dp</dimen>
+  <dimen name="button_text_size">20dp</dimen>
+  <dimen name="button_placeholder_height">56dp</dimen>
 
   <dimen name="recipe_card_height">200dp</dimen>
   <dimen name="recipe_card_text_padding">10dp</dimen>
@@ -20,11 +23,14 @@
   <dimen name="step_image_width">120dp</dimen>
   <dimen name="step_card_fade">24dp</dimen>
 
-  <dimen name="recipe_step_card_min_height">80dp</dimen>
+  <dimen name="step_body_line_spacing_multiplier">1.4</dimen>
 
+  <dimen name="recipe_step_card_min_height">80dp</dimen>
 
   <dimen name="recipe_card_header_size">22sp</dimen>
 
+
+  <dimen name="normal_text_header_size">24sp</dimen>
   <dimen name="normal_text_size">18sp</dimen>
   <dimen name="sub_important_text_size">16sp</dimen>
 

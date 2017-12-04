@@ -48,6 +48,9 @@ public class RecipeStepsActivity extends AppCompatActivity implements StepListFr
     mStepListFragment.bindRecipe(mRecipe);
 
     mStepDetailFragment = (StepDetailFragment) fm.findFragmentById(R.id.step_detail_fragment);
+    if (mStepDetailFragment != null){
+      mStepDetailFragment.setRecipe(mRecipe);
+    }
 
   }
 
@@ -68,18 +71,19 @@ public class RecipeStepsActivity extends AppCompatActivity implements StepListFr
   }
 
   @Override
-  public void onStepClicked(Step selectedStep) {
+  public void onStepClicked(int position) {
 
     if (mStepDetailFragment != null && mStepDetailFragment.isAdded()){
       //has detail fragment
-      mStepDetailFragment.bindStep(selectedStep);
+      mStepDetailFragment.bindStep(position);
     }else{
       //does not have detail fragment
       //load activity
       Class destinationClass = StepDetailActivity.class;
       Intent intentToStartDetailActivity = new Intent(this, destinationClass);
 
-      intentToStartDetailActivity.putExtra(StepDetailActivity.STEP_EXTRA, selectedStep);
+      intentToStartDetailActivity.putExtra(StepDetailActivity.RECIPE_EXTRA, mRecipe);
+      intentToStartDetailActivity.putExtra(StepDetailActivity.STEP_INDEX_EXTRA, position );
       this.startActivity(intentToStartDetailActivity);
     }
   }

@@ -49,7 +49,7 @@ public class StepListFragment extends Fragment {
 
   // OnImageClickListener interface, calls a method in the host activity named onImageSelected
   public interface OnStepClickListener {
-    void onStepClicked(Step selectedStep);
+    void onStepClicked(int index);
   }
 
   // Override onAttach to make sure that the container activity has implemented the callback
@@ -106,9 +106,7 @@ public class StepListFragment extends Fragment {
     mStepFastAdapter.withOnClickListener(new FastItemAdapter.OnClickListener<StepListItem>() {
       @Override
       public boolean onClick(View v, IAdapter<StepListItem> adapter, StepListItem item, int position) {
-        Step selectedStep =  mStepFastAdapter.getAdapterItem(position).mStep;
-
-        mCallback.onStepClicked(selectedStep);
+        mCallback.onStepClicked(position);
         return true;
       }
     });
