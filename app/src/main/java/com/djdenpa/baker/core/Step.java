@@ -73,4 +73,18 @@ public class Step implements Parcelable {
     }
     return result;
   }
+
+  public static JSONObject toJSON(Step step){
+    JSONObject jStep = new JSONObject();
+    try {
+      jStep.put("id", step.id);
+      jStep.put("shortDescription", step.shortDescription);
+      jStep.put("description", step.description);
+      jStep.put("videoURL", step.videoURL);
+      jStep.put("thumbnailURL", step.thumbnailURL);
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    return jStep;
+  }
 }

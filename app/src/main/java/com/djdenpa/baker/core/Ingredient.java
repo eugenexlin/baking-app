@@ -135,6 +135,18 @@ public class Ingredient implements Parcelable {
     return result;
   }
 
+  public static JSONObject toJSON(Ingredient ingerdient){
+    JSONObject jStep = new JSONObject();
+    try {
+      jStep.put("quantity", ingerdient.quantity);
+      jStep.put("measure", ingerdient.measure);
+      jStep.put("ingredient", ingerdient.ingredient);
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    return jStep;
+  }
+
   //compare numbers
   private boolean areAboutEqual(double a, double b){
     return (Math.abs(a - b) < 0.01);

@@ -2,7 +2,6 @@ package com.djdenpa.baker.ui.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -61,7 +60,7 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
   private SetStepIndexHandler mSetStepIndexHandler;
   private TextView mErrorMessage;
   private TextView mStepShortDescription;
-  private TextView mStepLongDescription;
+  private TextView mStepDescription;
   private ImageView mButtonPlaceholder;
   private ScrollView mScrollView;
   private Button mNextStepButton;
@@ -93,7 +92,7 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
 
     mErrorMessage = rootView.findViewById(R.id.tv_error_message);
     mStepShortDescription =  rootView.findViewById(R.id.tv_short_description);
-    mStepLongDescription =  rootView.findViewById(R.id.tv_long_description);
+    mStepDescription =  rootView.findViewById(R.id.tv_step_description);
 
     mNextStepButton = rootView.findViewById(R.id.b_next_step);
     mButtonPlaceholder = rootView.findViewById(R.id.iv_button_placeholder);
@@ -203,7 +202,7 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
     mButtonPlaceholder.setVisibility(View.GONE);
     mNextStepButton.setVisibility(View.GONE);
     mStepShortDescription.setText("");
-    mStepLongDescription.setText("");
+    mStepDescription.setText("");
   }
 
   public void setHasNextStep(boolean hasNextStep){
@@ -247,7 +246,7 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
     }
 
     mStepShortDescription.setText(step.shortDescription);
-    mStepLongDescription.setText(step.description);
+    mStepDescription.setText(step.description);
 
     boolean showPlayer = false;
     try

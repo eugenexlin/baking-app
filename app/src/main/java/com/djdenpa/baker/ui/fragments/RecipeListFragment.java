@@ -3,7 +3,6 @@ package com.djdenpa.baker.ui.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Debug;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,7 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.djdenpa.baker.R;
-import com.djdenpa.baker.RecipeStepsActivity;
+import com.djdenpa.baker.ui.activities.RecipeStepsActivity;
 import com.djdenpa.baker.core.MediumQualityRandomRecipeJSONEmitter;
 import com.djdenpa.baker.core.Recipe;
 import com.djdenpa.baker.core.network.RecipeFetcher;
@@ -91,52 +90,14 @@ public class RecipeListFragment extends Fragment {
 
     showLoadingBar();
 
-    Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl(RecipeFetcher.UDACITY_URL)
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .build();
-
-    RecipeFetcher.FetchRecipeService getRecipes = retrofit.create(RecipeFetcher.FetchRecipeService.class);
-    Call<String> call = getRecipes.getTasks();
-    call.enqueue(new Callback<String>() {
-      @Override
-      public void onResponse(Call<String> call, Response<String> response) {
-        if (response.isSuccessful()){
-          List<RecipeListItem> result = new ArrayList<>();
-          try {
-            String responseString = response.body();
-            JSONArray jRecipes = new JSONArray(responseString);
-            for (int i = 0 ; i < jRecipes.length(); i++) {
-              JSONObject jRecipe = jRecipes.getJSONObject(i);
-              Recipe recipe = Recipe.fromJSON(jRecipe);
-              result.add(new RecipeListItem(recipe, mContext));
-            }
-          } catch (Exception e) {
-            Log.d("ERROR", e.getMessage());
-          }
-
-          mFastAdapter.add(result);
-        }
-        hideLoadingBar();
-
-      }
-
-      @Override
-      public void onFailure(Call<String> call, Throwable t) {
-        Log.d("ERROR", t.getMessage());
-        hideLoadingBar();
-      }
-    });
-
-
     return rootView;
 
   }
 
-  private void showLoadingBar(){
+  public void showLoadingBar(){
     mPBLoading.setVisibility(View.VISIBLE);
   }
-  private void hideLoadingBar(){
+  public void hideLoadingBar(){
     mPBLoading.setVisibility(View.GONE);
   }
 
@@ -155,6 +116,11 @@ public class RecipeListFragment extends Fragment {
   @Override
   public void onSaveInstanceState(Bundle outState) {
     return;
+  }
+
+  public void BindData(List<RecipeListItem> data){
+    mFastAdapter.clear();
+    mFastAdapter.add(data);
   }
 
   public void BindRandomData() {

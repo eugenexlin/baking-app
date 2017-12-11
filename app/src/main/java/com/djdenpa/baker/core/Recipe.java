@@ -109,4 +109,5 @@ public class Recipe implements Parcelable {
     }
     return result;
   }
+
 }

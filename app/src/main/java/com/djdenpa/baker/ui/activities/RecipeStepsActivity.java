@@ -1,4 +1,4 @@
-package com.djdenpa.baker;
+package com.djdenpa.baker.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,8 +6,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
+import com.djdenpa.baker.R;
 import com.djdenpa.baker.core.Recipe;
-import com.djdenpa.baker.core.Step;
 import com.djdenpa.baker.ui.fragments.StepDetailFragment;
 import com.djdenpa.baker.ui.fragments.StepListFragment;
 

@@ -81,7 +81,7 @@
           tools:text="Step Detail"/>
 
       <TextView
-          android:id="@+id/tv_long_description"
+          android:id="@+id/tv_step_description"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginEnd="16dp"
