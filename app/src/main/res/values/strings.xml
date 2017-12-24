@@ -39,4 +39,6 @@
 
   <string name="step_thumbnail">Step Thumbnail</string>
 
+  <string name="preference_recipe_name">WIDGET_RECIPE_NAME</string>
+  <string name="preference_recipe_ingredients_json">WIDGET_RECIPE_INGREDIENTS_JSON</string>
 </resources>
