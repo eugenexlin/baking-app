@@ -1,7 +1,17 @@
 package com.djdenpa.baker.core;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
+import android.widget.Toast;
+
+import com.djdenpa.baker.R;
+import com.djdenpa.baker.service.IngredientListWidgetProvider;
+import com.djdenpa.baker.ui.adapters.IngredientListItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,6 +24,9 @@ import java.util.LinkedList;
  */
 
 public class Recipe implements Parcelable {
+
+  public static final String WIDGET_CONTENT_PREFERENCE_KEY = "WIDGET_CONTENT_PREFERENCE_KEY";
+  public static final String WIDGET_RECIPE_NAME_PREFERENCE_KEY = "WIDGET_RECIPE_NAME_PREFERENCE_KEY";
 
   public int id;
   public String name;
@@ -35,6 +48,19 @@ public class Recipe implements Parcelable {
     }
     return mIngredients;
   }
+  /*
+  pass context so we get the string templates.
+   */
+  public String getIngredientsListString(Context context){
+    StringBuilder sb = new StringBuilder();
+    for (Ingredient ingredient : ingredients()) {
+      IngredientListItem ili = new IngredientListItem(ingredient, context);
+      sb.append(ili.getDisplayText());
+      sb.append("\n");
+    }
+    return sb.toString();
+  }
+
   public String stepsJSON;
   private LinkedList<Step> mSteps = null;
   public LinkedList<Step> steps(){

@@ -47,7 +47,7 @@ import com.google.android.exoplayer2.util.Util;
  * A lot of this was copied from Classical Music Quiz
  */
 
-public class StepDetailFragment extends Fragment implements ExoPlayer.EventListener {
+public class StepDetailsFragment extends Fragment implements ExoPlayer.EventListener {
 
   private static final String TAG = "STEP_DETAIL_TAG";
   private static final String NOW_PLAYING_STATE = "NOW_PLAYING_STATE";
@@ -83,7 +83,7 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
   @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-    final View rootView = inflater.inflate(R.layout.fragment_step_detail, container, false);
+    final View rootView = inflater.inflate(R.layout.fragment_step_details, container, false);
     mContext = getContext();
 
     if (mContext instanceof SetStepIndexHandler){

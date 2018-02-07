@@ -32,6 +32,15 @@
   <string name="ingredients_header">Ingredients</string>
   <string name="steps_header">Steps</string>
 
+  <string name="save_to_widget_text">To Widget</string>
+  <string name="menu_save_to_widget">Save Ingredients To Widget</string>
+
+  <string name="widget_ingredient_header_template">Ingredients for %1$s</string>
+
+  <string name="save_to_widget_notification">Saved Recipe List to Widget</string>
+
+  <string name="bullet">・</string>
+
   <string name="cannot_load_recipe_error">Unable to load this recipe.</string>
   <string name="cannot_load_step_error">Unable to load this step.</string>
 
@@ -39,6 +48,5 @@
 
   <string name="step_thumbnail">Step Thumbnail</string>
 
-  <string name="preference_recipe_name">WIDGET_RECIPE_NAME</string>
-  <string name="preference_recipe_ingredients_json">WIDGET_RECIPE_INGREDIENTS_JSON</string>
+  <string name="no_ingredients_set">No Ingredients Set. Click to find a Recipe!</string>
 </resources>

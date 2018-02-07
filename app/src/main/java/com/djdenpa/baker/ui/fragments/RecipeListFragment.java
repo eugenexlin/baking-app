@@ -16,10 +16,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.djdenpa.baker.R;
-import com.djdenpa.baker.ui.activities.RecipeStepsActivity;
+import com.djdenpa.baker.ui.activities.RecipeDetailsActivity;
 import com.djdenpa.baker.core.MediumQualityRandomRecipeJSONEmitter;
 import com.djdenpa.baker.core.Recipe;
-import com.djdenpa.baker.core.network.RecipeFetcher;
 import com.djdenpa.baker.ui.adapters.RecipeListItem;
 import com.mikepenz.fastadapter.IAdapter;
 import com.mikepenz.fastadapter.IItem;
@@ -30,12 +29,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
  * Created by denpa on 9/23/2017.
@@ -76,10 +69,10 @@ public class RecipeListFragment extends Fragment {
       public boolean onClick(View v, IAdapter adapter, IItem item, int position) {
         Recipe selectedRecipe = ((RecipeListItem) mFastAdapter.getAdapterItem(position)).mRecipe;
 
-        Class destinationClass = RecipeStepsActivity.class;
+        Class destinationClass = RecipeDetailsActivity.class;
         Intent intentToStartDetailActivity = new Intent(mContext, destinationClass);
 
-        intentToStartDetailActivity.putExtra(RecipeStepsActivity.RECIPE_EXTRA, selectedRecipe);
+        intentToStartDetailActivity.putExtra(RecipeDetailsActivity.RECIPE_EXTRA, selectedRecipe);
         mContext.startActivity(intentToStartDetailActivity);
 
         return true;

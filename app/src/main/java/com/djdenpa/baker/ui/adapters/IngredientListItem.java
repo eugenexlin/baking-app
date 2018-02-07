@@ -88,10 +88,16 @@ public class IngredientListItem extends AbstractItem<IngredientListItem, Ingredi
     //call super so the selection is already handled for you
     super.bindView(viewHolder, payloads);
 
-    String measureText = String.format(mIngredientMeasureTemplate, mIngredient.readableQuantity(), mIngredient.measure.toLowerCase());
-    viewHolder.mCBIngredient.setText(String.format(mIngredientTextTemplate, measureText, mIngredient.ingredient));
+    String ingredientText = getDisplayText();
+    viewHolder.mCBIngredient.setText(ingredientText);
     viewHolder.mCBIngredient.setChecked(mChecked);
   }
+
+  public String getDisplayText(){
+    String measureText = String.format(mIngredientMeasureTemplate, mIngredient.readableQuantity(), mIngredient.measure.toLowerCase());
+    return String.format(mIngredientTextTemplate, measureText, mIngredient.ingredient);
+  }
+
 
   protected static class ViewHolder extends RecyclerView.ViewHolder {
     protected CheckBox mCBIngredient;

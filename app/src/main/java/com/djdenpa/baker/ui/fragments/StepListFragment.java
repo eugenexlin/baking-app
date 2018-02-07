@@ -11,15 +11,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.djdenpa.baker.R;
 import com.djdenpa.baker.core.Ingredient;
 import com.djdenpa.baker.core.Recipe;
 import com.djdenpa.baker.core.Step;
+import com.djdenpa.baker.ui.activities.RecipeDetailsActivity;
 import com.djdenpa.baker.ui.adapters.IngredientListItem;
 import com.djdenpa.baker.ui.adapters.StepListItem;
-import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IAdapter;
 import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter;
 
@@ -74,7 +75,7 @@ public class StepListFragment extends Fragment {
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-    View rootView = inflater.inflate(R.layout.fragment_recipe_steps, container, false);
+    View rootView = inflater.inflate(R.layout.fragment_recipe_details, container, false);
     mContext = getContext();
 
     mRVIngredients = rootView.findViewById(R.id.rv_ingredients);
@@ -119,6 +120,14 @@ public class StepListFragment extends Fragment {
     }
 
     mErrorMessage  = rootView.findViewById(R.id.tv_error_message);
+
+
+    final Button button = rootView.findViewById(R.id.b_to_widget);
+    button.setOnClickListener(new View.OnClickListener() {
+      public void onClick(View v) {
+        ((RecipeDetailsActivity) getActivity()).saveCurrentIngredientListToWidget();
+      }
+    });
 
     return rootView;
   }

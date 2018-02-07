@@ -1,27 +1,36 @@
 package com.djdenpa.baker.ui.activities;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.djdenpa.baker.R;
 import com.djdenpa.baker.core.Recipe;
-import com.djdenpa.baker.ui.fragments.StepDetailFragment;
+import com.djdenpa.baker.service.IngredientListWidgetProvider;
+import com.djdenpa.baker.ui.fragments.StepDetailsFragment;
 import com.djdenpa.baker.ui.fragments.StepListFragment;
 
 /**
  * Created by denpa on 10/29/2017.
  */
 
-public class RecipeStepsActivity extends AppCompatActivity implements StepListFragment.OnStepClickListener {
+public class RecipeDetailsActivity extends AppCompatActivity implements StepListFragment.OnStepClickListener {
 
   public static final String RECIPE_EXTRA = "StepListFragment_RECIPE_EXTRA";
 
   Recipe mRecipe = null;
   private StepListFragment mStepListFragment;
-  private StepDetailFragment mStepDetailFragment;
+  private StepDetailsFragment mStepDetailFragment;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +55,10 @@ public class RecipeStepsActivity extends AppCompatActivity implements StepListFr
 
     setTitle(mRecipe.name);
     mStepListFragment.bindRecipe(mRecipe);
-
-    mStepDetailFragment = (StepDetailFragment) fm.findFragmentById(R.id.step_detail_fragment);
+    mStepDetailFragment = (StepDetailsFragment) fm.findFragmentById(R.id.step_detail_fragment);
     if (mStepDetailFragment != null){
       mStepDetailFragment.setRecipe(mRecipe);
     }
-
   }
 
   @Override
@@ -86,6 +93,46 @@ public class RecipeStepsActivity extends AppCompatActivity implements StepListFr
       intentToStartDetailActivity.putExtra(StepDetailActivity.STEP_INDEX_EXTRA, position );
       this.startActivity(intentToStartDetailActivity);
     }
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    MenuInflater inflater = getMenuInflater();
+    inflater.inflate(R.menu.menu_recipe_details, menu);
+    return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    int id = item.getItemId();
+
+    if (id == R.id.action_save_to_widget) {
+      saveCurrentIngredientListToWidget();
+      return true;
+    }
+
+    return super.onOptionsItemSelected(item);
+  }
+
+  public void saveCurrentIngredientListToWidget(){
+    SharedPreferences widgetContent = PreferenceManager.getDefaultSharedPreferences(this);
+    SharedPreferences.Editor editor = widgetContent.edit();
+    editor.putString(Recipe.WIDGET_CONTENT_PREFERENCE_KEY, mRecipe.getIngredientsListString(this));
+    editor.putString(Recipe.WIDGET_RECIPE_NAME_PREFERENCE_KEY, mRecipe.name);
+    editor.apply();
+
+    AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+    int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, IngredientListWidgetProvider.class));
+
+    //This function can update GridView, but it does not seem to be able to update a single TextView.
+    appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list_view);
+
+    Intent updateIntent = new Intent();
+    updateIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+    updateIntent.putExtra(IngredientListWidgetProvider.WIDGET_REFRESH_KEY, appWidgetIds);
+    this.sendBroadcast(updateIntent);
+
+    Toast.makeText(this, R.string.save_to_widget_notification,Toast.LENGTH_SHORT).show();
   }
 
 }

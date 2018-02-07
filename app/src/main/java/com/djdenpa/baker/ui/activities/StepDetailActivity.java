@@ -1,6 +1,5 @@
 package com.djdenpa.baker.ui.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -8,8 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.djdenpa.baker.R;
 import com.djdenpa.baker.core.Recipe;
-import com.djdenpa.baker.core.Step;
-import com.djdenpa.baker.ui.fragments.StepDetailFragment;
+import com.djdenpa.baker.ui.fragments.StepDetailsFragment;
 
 /**
  * Created by denpa on 11/5/2017.
@@ -17,7 +15,7 @@ import com.djdenpa.baker.ui.fragments.StepDetailFragment;
 
 public class StepDetailActivity
         extends AppCompatActivity
-        implements StepDetailFragment.SetStepIndexHandler{
+        implements StepDetailsFragment.SetStepIndexHandler{
 
   public static final String RECIPE_EXTRA = "StepDetailActivity_RECIPE_EXTRA";
   public static final String STEP_INDEX_EXTRA = "StepDetailActivity_STEP_INDEX_EXTRA";
@@ -29,7 +27,7 @@ public class StepDetailActivity
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_step_detail);
+    setContentView(R.layout.activity_step_details);
 
     Intent parentIntent = getIntent();
 
@@ -44,7 +42,7 @@ public class StepDetailActivity
 
 
     FragmentManager fm = getSupportFragmentManager();
-    StepDetailFragment stepDetailFragment = (StepDetailFragment) fm.findFragmentById(R.id.step_detail_fragment);
+    StepDetailsFragment stepDetailFragment = (StepDetailsFragment) fm.findFragmentById(R.id.step_detail_fragment);
 
     if(savedInstanceState != null){
       if (savedInstanceState.containsKey(STEP_INDEX_STATE)){

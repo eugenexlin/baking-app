@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/step_detail_fragment"
-        android:name="com.djdenpa.baker.ui.fragments.StepDetailFragment"
+        android:name="com.djdenpa.baker.ui.fragments.StepDetailsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

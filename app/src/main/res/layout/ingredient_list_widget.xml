@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/ll_widget"
+              android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@drawable/paper_recipe_list"
+              android:orientation="vertical"
+
+    >
+
+
+  <TextView
+      android:id="@+id/tv_widget_header"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="ingredients_header"
+      android:padding="@dimen/standard_padding"
+      android:textSize="@dimen/recipe_card_header_size"
+      android:visibility="gone"/>
+
+  <GridView
+        android:id="@+id/widget_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="1"
+        android:visibility="gone"
+      />
+
+    <RelativeLayout
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+      <TextView
+          android:layout_centerInParent="true"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textAlignment="center"
+          android:text="@string/no_ingredients_set"
+          android:textSize="20sp"
+          android:textStyle="bold" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>
