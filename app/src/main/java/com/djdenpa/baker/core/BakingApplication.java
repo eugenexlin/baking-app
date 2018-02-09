@@ -26,7 +26,7 @@ public class BakingApplication extends Application {
     return appComponent;
   }
 
-  protected AppComponent initDagger(BakingApplication application) {
+  private AppComponent initDagger(BakingApplication application) {
     return DaggerAppComponent.builder()
             .appModule(new AppModule(application))
             .build();

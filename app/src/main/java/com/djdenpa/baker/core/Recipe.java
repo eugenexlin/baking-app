@@ -1,16 +1,9 @@
 package com.djdenpa.baker.core;
 
-import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.preference.PreferenceManager;
-import android.widget.Toast;
 
-import com.djdenpa.baker.R;
-import com.djdenpa.baker.service.IngredientListWidgetProvider;
 import com.djdenpa.baker.ui.adapters.IngredientListItem;
 
 import org.json.JSONArray;
@@ -21,6 +14,10 @@ import java.util.LinkedList;
 
 /**
  * Created by denpa on 10/7/2017.
+ *
+ * object for recipe
+ *
+ * to get the ingredients and steps, these are parsed out from the JSON lazy loaded
  */
 
 public class Recipe implements Parcelable {
@@ -28,6 +25,7 @@ public class Recipe implements Parcelable {
   public static final String WIDGET_CONTENT_PREFERENCE_KEY = "WIDGET_CONTENT_PREFERENCE_KEY";
   public static final String WIDGET_RECIPE_NAME_PREFERENCE_KEY = "WIDGET_RECIPE_NAME_PREFERENCE_KEY";
 
+  @SuppressWarnings("WeakerAccess")
   public int id;
   public String name;
   public String ingredientsJSON;
@@ -87,7 +85,7 @@ public class Recipe implements Parcelable {
 
   }
 
-  protected Recipe(Parcel in) {
+  private Recipe(Parcel in) {
     id = in.readInt();
     name = in.readString();
     ingredientsJSON = in.readString();

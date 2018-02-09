@@ -1,5 +1,6 @@
 package com.djdenpa.baker.ui.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
@@ -68,7 +69,10 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
 
   private View mRootView;
 
+
+  @SuppressLint("StaticFieldLeak")
   private static SimpleExoPlayer mExoPlayer;
+
   private SimpleExoPlayerView mPlayerView ;
   private static MediaSessionCompat mMediaSession;
   private PlaybackStateCompat.Builder mStateBuilder;
@@ -81,7 +85,7 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
 
   @Nullable
   @Override
-  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
     final View rootView = inflater.inflate(R.layout.fragment_step_details, container, false);
     mContext = getContext();
@@ -187,25 +191,20 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
     outState.putString(NOW_PLAYING_STATE, mNowPlaying);
   }
 
-  //
-  public void hideFullScreenButton(){
-
-  }
-
   public void displayError(String errorMessage){
     mErrorMessage.setVisibility(View.VISIBLE);
     mErrorMessage.setText(errorMessage);
     mExoPlayerFrameLayout.setVisibility(View.GONE);
   }
 
-  public void unloadStep(){
+  private void unloadStep(){
     mButtonPlaceholder.setVisibility(View.GONE);
     mNextStepButton.setVisibility(View.GONE);
     mStepShortDescription.setText("");
     mStepDescription.setText("");
   }
 
-  public void setHasNextStep(boolean hasNextStep){
+  private void setHasNextStep(boolean hasNextStep){
     if(hasNextStep){
       mButtonPlaceholder.setVisibility(View.VISIBLE);
       mNextStepButton.setVisibility(View.VISIBLE);
@@ -281,15 +280,14 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
 //    delayedResizeExoPlayer();
 //  }
 
-  public void delayedResizeExoPlayer(){
+  private void delayedResizeExoPlayer(){
     //this will try to adapt the height of the video player to aspect ratio of the used screen space.
     mRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
       @Override
       public void onGlobalLayout() {
         double fragmentWidth = (float) mExoPlayerFrameLayout.getWidth();
         //set the dimensions to 16:9 regardless of screen size.
-        int heightToSet = (int)Math.floor(fragmentWidth/16.0*9.0);
-        mExoPlayerFrameLayout.getLayoutParams().height = heightToSet;
+        mExoPlayerFrameLayout.getLayoutParams().height = (int)Math.floor(fragmentWidth/16.0*9.0);
         mExoPlayerFrameLayout.requestLayout();
         mRootView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
       }

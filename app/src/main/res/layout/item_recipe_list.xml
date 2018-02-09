@@ -5,6 +5,7 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:foreground="?android:attr/selectableItemBackground"
     android:clickable="true"
+    android:focusable="true"
     android:id="@+id/card_view"
     android:layout_gravity="center"
     android:layout_width="match_parent"
@@ -23,7 +24,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/recipe_image_height"
         android:scaleType="centerCrop"
-        card_view:srcCompat="@drawable/image_placeholder"/>
+        card_view:srcCompat="@drawable/image_placeholder"
+        android:contentDescription="@string/recipe_image_content_description"/>
 
     <TextView
         android:id="@+id/tv_recipe_name"
@@ -42,6 +44,7 @@
         android:textColor="@color/sub_important_text"
         tools:text="servings"
         android:paddingStart="@dimen/recipe_card_text_padding"
+        android:paddingEnd="@dimen/recipe_card_text_padding"
         android:textSize="@dimen/sub_important_text_size"
         />
 

@@ -15,16 +15,17 @@ import java.util.List;
 
 /**
  * Created by denpa on 12/17/2017.
+ *
+ * remote views for the recipe list widget
  */
 
-public class RecipeRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
+class RecipeRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
-  private Context mContext;
-  private List<String> mIngredients = new ArrayList<>();
+  private final Context mContext;
+  private final List<String> mIngredients = new ArrayList<>();
 
-  public RecipeRemoteViewsFactory(Context applicationContext) {
+  RecipeRemoteViewsFactory(Context applicationContext) {
     mContext = applicationContext;
-
   }
 
   @Override
@@ -37,7 +38,7 @@ public class RecipeRemoteViewsFactory implements RemoteViewsService.RemoteViewsF
     pullDataFromPreference();
   }
 
-  public void pullDataFromPreference(){
+  private void pullDataFromPreference(){
     mIngredients.clear();
     SharedPreferences widgetContent = PreferenceManager.getDefaultSharedPreferences(mContext);
     String sIngredients = widgetContent.getString(Recipe.WIDGET_CONTENT_PREFERENCE_KEY,"");

@@ -2,17 +2,13 @@ package com.djdenpa.baker.ui.activities;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.djdenpa.baker.R;
 import com.djdenpa.baker.core.BakingApplication;
@@ -26,7 +22,6 @@ import com.djdenpa.baker.ui.fragments.RecipeListFragment;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,10 +33,10 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-  MainActivityIdlingResource mIdlingResource;
+  private MainActivityIdlingResource mIdlingResource;
 
-  RecipeListFragment mRecipeListFragment = null;
-  protected BakingApplication mApplication;
+  private RecipeListFragment mRecipeListFragment = null;
+  private BakingApplication mApplication;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
   }
 
   //call this when starting activity
-  public void bindDataOrFetchNew() {
+  private void bindDataOrFetchNew() {
     if (mApplication.mRecipes.size() == 0) {
       fetchDataFromNetwork();
     } else {
@@ -94,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
     }
   }
 
-  public void bindRecipesToFragment(List<Recipe> recipes) {
+  private void bindRecipesToFragment(List<Recipe> recipes) {
 
     List<RecipeListItem> dataSource = new ArrayList<>();
 
@@ -105,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     mRecipeListFragment.BindData(dataSource);
   }
 
-  public void fetchDataFromNetwork() {
+  private void fetchDataFromNetwork() {
 
     mRecipeListFragment.showLoadingBar();
 
@@ -118,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
     Call<String> call = getRecipes.getTasks();
     call.enqueue(new Callback<String>() {
       @Override
-      public void onResponse(Call<String> call, Response<String> response) {
+      public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
         if (response.isSuccessful()) {
           List<Recipe> result = new ArrayList<>();
           try {
@@ -141,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
       }
 
       @Override
-      public void onFailure(Call<String> call, Throwable t) {
+      public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
         Log.d("ERROR", t.getMessage());
         mRecipeListFragment.hideLoadingBar();
       }

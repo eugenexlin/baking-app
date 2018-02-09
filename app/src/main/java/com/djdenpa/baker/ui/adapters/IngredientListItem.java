@@ -16,13 +16,15 @@ import java.util.List;
 
 /**
  * Created by denpa on 11/5/2017.
+ *
+ * ingredient list item to show in the ingredient list and display
  */
 
 public class IngredientListItem extends AbstractItem<IngredientListItem, IngredientListItem.ViewHolder> {
-  public Ingredient mIngredient;
+  private final Ingredient mIngredient;
   public boolean mChecked = false;
-  public String mIngredientTextTemplate;
-  public String mIngredientMeasureTemplate;
+  private final String mIngredientTextTemplate;
+  private String mIngredientMeasureTemplate;
 
   public IngredientListItem(Ingredient recipe, Context context){
     mIngredient = recipe;
@@ -37,6 +39,8 @@ public class IngredientListItem extends AbstractItem<IngredientListItem, Ingredi
       case "TSP":
         mIngredientMeasureTemplate = context.getString(R.string.measure_text_teaspoon);
         break;
+
+        //this tablespoon spelling comes from the API
       case "TBLSP":
         mIngredientMeasureTemplate = context.getString(R.string.measure_text_tablespoon);
         break;
@@ -99,10 +103,10 @@ public class IngredientListItem extends AbstractItem<IngredientListItem, Ingredi
   }
 
 
-  protected static class ViewHolder extends RecyclerView.ViewHolder {
-    protected CheckBox mCBIngredient;
+  static class ViewHolder extends RecyclerView.ViewHolder {
+    private final CheckBox mCBIngredient;
 
-    public ViewHolder(View view) {
+    private ViewHolder(View view) {
       super(view);
       this.mCBIngredient = view.findViewById(R.id.cb_ingredient);
     }

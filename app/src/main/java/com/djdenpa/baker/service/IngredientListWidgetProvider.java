@@ -4,12 +4,11 @@ import android.annotation.TargetApi;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.opengl.Visibility;
 import android.os.Build;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -23,7 +22,7 @@ import com.djdenpa.baker.ui.activities.MainActivity;
  */
 public class IngredientListWidgetProvider extends AppWidgetProvider {
 
-  static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
+  private static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                               int appWidgetId) {
     RemoteViews rv = getIngredientsRemoteView(context);
     appWidgetManager.updateAppWidget(appWidgetId, rv);
@@ -68,8 +67,11 @@ public class IngredientListWidgetProvider extends AppWidgetProvider {
   @Override
   public void onReceive(Context context, Intent intent) {
     if (intent.hasExtra(WIDGET_REFRESH_KEY)) {
-      int[] ids = intent.getExtras().getIntArray(WIDGET_REFRESH_KEY);
-      this.onUpdate(context, AppWidgetManager.getInstance(context), ids);
+      Bundle extras = intent.getExtras();
+      if (extras != null){
+        int[] ids = extras.getIntArray(WIDGET_REFRESH_KEY);
+        this.onUpdate(context, AppWidgetManager.getInstance(context), ids);
+      }
     } else super.onReceive(context, intent);
   }
 

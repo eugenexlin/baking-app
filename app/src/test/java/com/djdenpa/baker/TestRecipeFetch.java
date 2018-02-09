@@ -4,10 +4,10 @@ import com.djdenpa.baker.core.network.RecipeFetcher;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-
 /**
  * Created by denpa on 10/15/2017.
+ *
+ * tiny test
  */
 
 public class TestRecipeFetch {

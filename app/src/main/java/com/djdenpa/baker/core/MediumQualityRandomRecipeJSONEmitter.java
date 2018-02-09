@@ -1,21 +1,20 @@
 package com.djdenpa.baker.core;
 
-import android.text.TextUtils;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.LinkedList;
 import java.util.Random;
 
 /**
  * Created by denpa on 10/29/2017.
+ *
+ * This class is just for creating random test data to see how the UI will look.
  */
 
 public class MediumQualityRandomRecipeJSONEmitter {
 
-  public static Random rand = new Random();
+  private static final Random rand = new Random();
 
   public static JSONArray GenerateSomeLongRecipeList(){
     JSONArray jRecipes = new JSONArray();
@@ -29,7 +28,7 @@ public class MediumQualityRandomRecipeJSONEmitter {
     return jRecipes;
   }
 
-  public static JSONObject GenerateOneRecipe(int id){
+  private static JSONObject GenerateOneRecipe(int id){
 
     JSONObject jRecipe = new JSONObject();
 
@@ -51,7 +50,7 @@ public class MediumQualityRandomRecipeJSONEmitter {
   }
 
 
-  public static JSONArray GenerateSomeLongStepList(){
+  private static JSONArray GenerateSomeLongStepList(){
     JSONArray jSteps = new JSONArray();
 
     int recipeNum = rand.nextInt(25) + 5;
@@ -63,7 +62,7 @@ public class MediumQualityRandomRecipeJSONEmitter {
     return jSteps;
   }
 
-  public static JSONObject GenerateOneStep(int id){
+  private static JSONObject GenerateOneStep(int id){
 
     JSONObject jStep = new JSONObject();
 
@@ -79,7 +78,7 @@ public class MediumQualityRandomRecipeJSONEmitter {
     return jStep;
   }
 
-  public static JSONArray GenerateSomeLongIngredientList(){
+  private static JSONArray GenerateSomeLongIngredientList(){
     JSONArray jIngredients = new JSONArray();
 
     int recipeNum = rand.nextInt(10) + 5;
@@ -91,14 +90,14 @@ public class MediumQualityRandomRecipeJSONEmitter {
     return jIngredients;
   }
 
-  public static JSONObject GenerateOneIngredient(){
+  private static JSONObject GenerateOneIngredient(){
 
     JSONObject jRecipe = new JSONObject();
 
     try {
       jRecipe.put("measure", units[rand.nextInt(units.length)]);
 
-      double quantity = 0;
+      double quantity;
       if (rand.nextInt(10) < 5){
         quantity = rand.nextInt(5);
       }else{
@@ -133,20 +132,17 @@ public class MediumQualityRandomRecipeJSONEmitter {
     return jRecipe;
   }
 
-  public static String[] units = {"TSP", "TBLSP", "CUP", "G", "OZ", "K", "UNIT" };
+  private static final String[] units = {"TSP", "TBLSP", "CUP", "G", "OZ", "K", "UNIT" };
 
 
   //look at this sweet character distribution
-  public static String vowely = "aaaaaeeeeeeiiioooouuy";
-  public static String consonanty = "bbbcdddfffggghhhjjkkkllmmmmnnnnppqrrssssstttttvwxz";
+  private static final String vowelDistribution = "aaaaaeeeeeeiiioooouuy";
+  private static final String consonantDistribution = "bbbcdddfffggghhhjjkkkllmmmmnnnnppqrrssssstttttvwxz";
 
-  public static String charactersThatOftenDouble = "eoblt";
+  private static final String charactersThatOftenDouble = "eoblt";
 
   /**
-   *
-   * @param approxMaxWords
-   * @param properCasing true = every one uppercased, false = only first
-   * @return
+   * uses arbitrary rules to generate a random phrase
    */
   public static String GenerateStringPhrase(int approxMaxWords, boolean properCasing){
     int numberOfWords = rand.nextInt(approxMaxWords) + approxMaxWords /2;
@@ -215,9 +211,9 @@ public class MediumQualityRandomRecipeJSONEmitter {
 
     for (int i = 1; i <= wordLength; i++){
       if (nextIsConsonant) {
-        currentChar = SelectAChar(consonanty, currentChar);
+        currentChar = SelectAChar(consonantDistribution, currentChar);
       }else{
-        currentChar = SelectAChar(vowely, currentChar);
+        currentChar = SelectAChar(vowelDistribution, currentChar);
       }
 
       if (firstCharCaps) {
@@ -270,8 +266,8 @@ public class MediumQualityRandomRecipeJSONEmitter {
 
   }
 
-  public static char SelectAChar(String inputString, char notThisChar){
-    char selectedChar = 0;
+  private static char SelectAChar(String inputString, char notThisChar){
+    char selectedChar;
     do{
       int index = rand.nextInt(inputString.length());
       selectedChar =  inputString.charAt(index);

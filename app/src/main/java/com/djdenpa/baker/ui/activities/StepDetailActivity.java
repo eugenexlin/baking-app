@@ -11,6 +11,7 @@ import com.djdenpa.baker.ui.fragments.StepDetailsFragment;
 
 /**
  * Created by denpa on 11/5/2017.
+ * Activity for viewing the set detail and video.
  */
 
 public class StepDetailActivity
@@ -20,7 +21,7 @@ public class StepDetailActivity
   public static final String RECIPE_EXTRA = "StepDetailActivity_RECIPE_EXTRA";
   public static final String STEP_INDEX_EXTRA = "StepDetailActivity_STEP_INDEX_EXTRA";
 
-  public static final String STEP_INDEX_STATE = "StepDetailActivity_STEP_INDEX_STATE";
+  private static final String STEP_INDEX_STATE = "StepDetailActivity_STEP_INDEX_STATE";
   private Recipe mRecipe;
   private int mStepIndex;
 

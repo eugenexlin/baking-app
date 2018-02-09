@@ -3,7 +3,6 @@ package com.djdenpa.baker.ui.adapters;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.djdenpa.baker.R;
@@ -14,10 +13,11 @@ import java.util.List;
 
 /**
  * Created by denpa on 11/5/2017.
+ * step item for the fast adapter
  */
 
 public class StepListItem extends AbstractItem<StepListItem, StepListItem.ViewHolder> {
-  public Step mStep;
+  public final Step mStep;
 
   public StepListItem(Step step, Context context){
     mStep = step;
@@ -49,11 +49,11 @@ public class StepListItem extends AbstractItem<StepListItem, StepListItem.ViewHo
     viewHolder.mTVDescription.setText(mStep.description);
   }
 
-  protected static class ViewHolder extends RecyclerView.ViewHolder {
-    protected TextView mTVStep;
-    protected TextView mTVDescription;
+  static class ViewHolder extends RecyclerView.ViewHolder {
+    final TextView mTVStep;
+    final TextView mTVDescription;
 
-    public ViewHolder(View view) {
+    ViewHolder(View view) {
       super(view);
       this.mTVStep = view.findViewById(R.id.tv_step);
       this.mTVDescription = view.findViewById(R.id.tv_long_description);

@@ -8,12 +8,14 @@ import org.json.JSONObject;
 
 /**
  * Created by denpa on 10/7/2017.
+ *
+ * the object for ingredients
  */
 
 public class Ingredient implements Parcelable {
 
 
-  protected Ingredient(Parcel in) {
+  private Ingredient(Parcel in) {
     quantity = in.readDouble();
     measure = in.readString();
     ingredient = in.readString();
@@ -135,12 +137,12 @@ public class Ingredient implements Parcelable {
     return result;
   }
 
-  public static JSONObject toJSON(Ingredient ingerdient){
+  public static JSONObject toJSON(Ingredient ingredient){
     JSONObject jStep = new JSONObject();
     try {
-      jStep.put("quantity", ingerdient.quantity);
-      jStep.put("measure", ingerdient.measure);
-      jStep.put("ingredient", ingerdient.ingredient);
+      jStep.put("quantity", ingredient.quantity);
+      jStep.put("measure", ingredient.measure);
+      jStep.put("ingredient", ingredient.ingredient);
     } catch (JSONException e) {
       e.printStackTrace();
     }

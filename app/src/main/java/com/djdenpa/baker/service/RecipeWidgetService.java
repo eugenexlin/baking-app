@@ -5,6 +5,8 @@ import android.widget.RemoteViewsService;
 
 /**
  * Created by denpa on 12/17/2017.
+ *
+ * widget for the ingredients list
  */
 
 public class RecipeWidgetService extends RemoteViewsService {

@@ -22,13 +22,15 @@ import com.djdenpa.baker.ui.fragments.StepListFragment;
 
 /**
  * Created by denpa on 10/29/2017.
+ *
+ * the activity that shows a recipe expanded
  */
 
 public class RecipeDetailsActivity extends AppCompatActivity implements StepListFragment.OnStepClickListener {
 
   public static final String RECIPE_EXTRA = "StepListFragment_RECIPE_EXTRA";
 
-  Recipe mRecipe = null;
+  private Recipe mRecipe = null;
   private StepListFragment mStepListFragment;
   private StepDetailsFragment mStepDetailFragment;
 

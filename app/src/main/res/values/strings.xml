@@ -25,9 +25,6 @@
   <string name="step_detail_title_template">Step %1$s</string>
 
   <string name="next_step_text">Next Step</string>
-  <string name="full_screen_text">Full Screen</string>
-
-  <string name="recipes_header">Recipes</string>
 
   <string name="ingredients_header">Ingredients</string>
   <string name="steps_header">Steps</string>
@@ -49,4 +46,8 @@
   <string name="step_thumbnail">Step Thumbnail</string>
 
   <string name="no_ingredients_set">No Ingredients Set. Click to find a Recipe!</string>
+
+
+  <string name="recipe_image_content_description">Recipe Image</string>
+  <string name="button_placeholder_content_description">placeholder</string>
 </resources>

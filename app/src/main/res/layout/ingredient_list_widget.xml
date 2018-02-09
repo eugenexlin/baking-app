@@ -1,8 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:id="@+id/ll_widget"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/ll_widget"
               android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:background="@drawable/paper_recipe_list"
+              android:layout_height="match_parent"
+              android:background="@drawable/paper_recipe_list"
               android:orientation="vertical"
 
     >
@@ -12,7 +13,7 @@
       android:id="@+id/tv_widget_header"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:text="ingredients_header"
+      tools:text="ingredients_header"
       android:padding="@dimen/standard_padding"
       android:textSize="@dimen/recipe_card_header_size"
       android:visibility="gone"/>

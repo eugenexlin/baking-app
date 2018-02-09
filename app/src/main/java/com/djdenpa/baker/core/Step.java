@@ -15,13 +15,14 @@ public class Step implements Parcelable {
   public String shortDescription;
   public String description;
   public String videoURL;
+  @SuppressWarnings("WeakerAccess")
   public String thumbnailURL;
 
   public Step(){
   }
 
 
-  protected Step(Parcel in) {
+  private Step(Parcel in) {
     id = in.readInt();
     shortDescription = in.readString();
     description = in.readString();
@@ -55,7 +56,7 @@ public class Step implements Parcelable {
     }
   };
 
-  public static Step fromJSON(JSONObject jStep){
+  static Step fromJSON(JSONObject jStep){
     Step result = new Step();
     try {
       result.id = jStep.getInt("id");

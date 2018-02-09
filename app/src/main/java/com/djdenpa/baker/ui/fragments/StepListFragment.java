@@ -125,7 +125,10 @@ public class StepListFragment extends Fragment {
     final Button button = rootView.findViewById(R.id.b_to_widget);
     button.setOnClickListener(new View.OnClickListener() {
       public void onClick(View v) {
-        ((RecipeDetailsActivity) getActivity()).saveCurrentIngredientListToWidget();
+        RecipeDetailsActivity activity = (RecipeDetailsActivity) getActivity();
+        if (activity != null){
+          activity.saveCurrentIngredientListToWidget();
+        }
       }
     });
 
@@ -184,6 +187,6 @@ public class StepListFragment extends Fragment {
   }
 
   public Step getStepByPosition(int position){
-    return ((StepListItem)mStepFastAdapter.getItem(position)).mStep;
+    return (mStepFastAdapter.getItem(position)).mStep;
   }
 }

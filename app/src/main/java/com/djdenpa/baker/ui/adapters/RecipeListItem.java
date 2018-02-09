@@ -1,7 +1,6 @@
 package com.djdenpa.baker.ui.adapters;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -14,12 +13,14 @@ import java.util.List;
 
 /**
  * Created by denpa on 10/15/2017.
+ *
+ * Recipe item for the fast adapter
  */
 
 public class RecipeListItem extends AbstractItem<RecipeListItem, RecipeListItem.ViewHolder> {
-  public Recipe mRecipe;
+  public final Recipe mRecipe;
   //public Context mContext;
-  public String servingsHeader;
+  private final String servingsHeader;
 
   public RecipeListItem(Recipe recipe, Context context){
     //SAVE RESOURCES INSTEAD OF CONTEXT FOR SPED OPTIMIZATION
@@ -53,11 +54,11 @@ public class RecipeListItem extends AbstractItem<RecipeListItem, RecipeListItem.
     viewHolder.mServings.setText(String.format(servingsHeader, mRecipe.servings) );
   }
 
-  protected static class ViewHolder extends RecyclerView.ViewHolder {
-    protected TextView mName;
-    protected TextView mServings;
+  static class ViewHolder extends RecyclerView.ViewHolder {
+    final TextView mName;
+    final TextView mServings;
 
-    public ViewHolder(View view) {
+    ViewHolder(View view) {
       super(view);
       this.mName = view.findViewById(R.id.tv_recipe_name);
       this.mServings = view.findViewById(R.id.tv_servings);

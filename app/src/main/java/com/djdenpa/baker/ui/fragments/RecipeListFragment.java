@@ -3,6 +3,7 @@ package com.djdenpa.baker.ui.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -21,7 +22,6 @@ import com.djdenpa.baker.core.MediumQualityRandomRecipeJSONEmitter;
 import com.djdenpa.baker.core.Recipe;
 import com.djdenpa.baker.ui.adapters.RecipeListItem;
 import com.mikepenz.fastadapter.IAdapter;
-import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter;
 
 import org.json.JSONArray;
@@ -32,16 +32,17 @@ import java.util.List;
 
 /**
  * Created by denpa on 9/23/2017.
+ * fragment the shows the grid of recipes
  */
 
 public class RecipeListFragment extends Fragment {
 
-  Context mContext;
-  RecyclerView mRVRecipes;
-  FastItemAdapter mFastAdapter;
-  ProgressBar mPBLoading;
+  private Context mContext;
+  private RecyclerView mRVRecipes;
+  private FastItemAdapter<RecipeListItem> mFastAdapter;
+  private ProgressBar mPBLoading;
 
-  TextView mErrorMessage;
+  private TextView mErrorMessage;
 
 
   public RecipeListFragment() {
@@ -49,7 +50,7 @@ public class RecipeListFragment extends Fragment {
 
   @Nullable
   @Override
-  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
     View rootView = inflater.inflate(R.layout.fragment_recipe_list, container, false);
     mContext = getContext();
@@ -62,12 +63,12 @@ public class RecipeListFragment extends Fragment {
     final GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, calculateNoOfColumns(mContext), GridLayoutManager.VERTICAL ,false );
     mRVRecipes.setLayoutManager(gridLayoutManager);
 
-    mFastAdapter = new FastItemAdapter();
+    mFastAdapter = new FastItemAdapter<>();
     mFastAdapter.withSelectable(true);
-    mFastAdapter.withOnClickListener(new FastItemAdapter.OnClickListener() {
+    mFastAdapter.withOnClickListener(new FastItemAdapter.OnClickListener<RecipeListItem>() {
       @Override
-      public boolean onClick(View v, IAdapter adapter, IItem item, int position) {
-        Recipe selectedRecipe = ((RecipeListItem) mFastAdapter.getAdapterItem(position)).mRecipe;
+      public boolean onClick(View v, IAdapter adapter, RecipeListItem item, int position) {
+        Recipe selectedRecipe =  mFastAdapter.getAdapterItem(position).mRecipe;
 
         Class destinationClass = RecipeDetailsActivity.class;
         Intent intentToStartDetailActivity = new Intent(mContext, destinationClass);
@@ -84,7 +85,6 @@ public class RecipeListFragment extends Fragment {
     showLoadingBar();
 
     return rootView;
-
   }
 
   public void showLoadingBar(){
@@ -107,8 +107,7 @@ public class RecipeListFragment extends Fragment {
   }
 
   @Override
-  public void onSaveInstanceState(Bundle outState) {
-    return;
+  public void onSaveInstanceState(@NonNull Bundle outState) {
   }
 
   public void BindData(List<RecipeListItem> data){

@@ -11,12 +11,13 @@ import dagger.Provides;
 
 /**
  * Created by denpa on 12/10/2017.
+ *
  */
 
 @Module
 public class AppModule {
 
-  private BakingApplication application;
+  private final BakingApplication application;
 
   public AppModule(BakingApplication application) {
     this.application = application;
@@ -24,7 +25,7 @@ public class AppModule {
 
   @Provides
   @Singleton
-  public Context provideContext() {
+  Context provideContext() {
     return application;
   }
 

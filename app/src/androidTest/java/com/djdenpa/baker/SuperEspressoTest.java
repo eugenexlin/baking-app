@@ -5,8 +5,6 @@ import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.djdenpa.baker.core.BakingApplication;
 import com.djdenpa.baker.core.Ingredient;
@@ -14,9 +12,6 @@ import com.djdenpa.baker.core.Recipe;
 import com.djdenpa.baker.core.Step;
 import com.djdenpa.baker.ui.activities.MainActivity;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
 import org.json.JSONArray;
 import org.junit.After;
 import org.junit.Before;
@@ -30,22 +25,22 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.Matchers.anything;
 
 /**
  * Created by denpa on 12/10/2017.
+ * ui unit tests
  */
 
 @RunWith(AndroidJUnit4.class)
-public class SuperExpressoTest {
+public class SuperEspressoTest {
 
-  public final String TEST_RECIPE_NAME = "Super Cupcake";
-  public final String TEST_RECIPE_STEP_DESCRIPTION_SHORT = "Make It Babe";
-  public final String TEST_RECIPE_STEP_DESCRIPTION = "First, make the cupcake so moist, it quenches your thirst. That is all.";
-  public final int TEST_RECIPE_SERVINGS = 8;
+  private static final String TEST_RECIPE_NAME = "Super Cupcake";
+  private static final String TEST_RECIPE_STEP_DESCRIPTION_SHORT = "Make It Babe";
+  private static final String TEST_RECIPE_STEP_DESCRIPTION = "First, make the cupcake so moist, it quenches your thirst. That is all.";
+  private static final int TEST_RECIPE_SERVINGS = 8;
 
   @Rule
-  public ActivityTestRule<MainActivity> mActivityTestRule =
+  public final ActivityTestRule<MainActivity> mActivityTestRule =
           new ActivityTestRule<>(MainActivity.class);
 
   private IdlingResource mMainActivityIdlingResource;

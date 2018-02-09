@@ -1,14 +1,13 @@
 package com.djdenpa.baker.core.network;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.djdenpa.baker.core.Recipe;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -20,14 +19,15 @@ import retrofit2.http.GET;
 
 /**
  * Created by denpa on 10/7/2017.
+ * class to fetch recipe data from network
  */
+
 
 public class RecipeFetcher {
   public static final String UDACITY_URL = "http://go.udacity.com";
-  private static final String RECIPE_URL = "http://go.udacity.com/android-baking-app-json";
+  //private static final String RECIPE_URL = "http://go.udacity.com/android-baking-app-json";
 
-
-  public static void testGetRecipeList() throws IOException {
+  public static void testGetRecipeList() {
 
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(UDACITY_URL)
@@ -38,8 +38,9 @@ public class RecipeFetcher {
 
     Call<String> call = getRecipes.getTasks();
     call.enqueue(new Callback<String>() {
+      @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
       @Override
-      public void onResponse(Call<String> call, Response<String> response) {
+      public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
         if (response.isSuccessful()){
           ArrayList<Recipe> result = new ArrayList<>();
           try {
@@ -57,7 +58,7 @@ public class RecipeFetcher {
       }
 
       @Override
-      public void onFailure(Call<String> call, Throwable t) {
+      public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
         Log.d("ERROR", t.getMessage());
       }
     });
