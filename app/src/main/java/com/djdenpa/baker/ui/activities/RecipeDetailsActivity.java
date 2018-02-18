@@ -1,14 +1,17 @@
 package com.djdenpa.baker.ui.activities;
 
+import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,6 +22,8 @@ import com.djdenpa.baker.core.Recipe;
 import com.djdenpa.baker.service.IngredientListWidgetProvider;
 import com.djdenpa.baker.ui.fragments.StepDetailsFragment;
 import com.djdenpa.baker.ui.fragments.StepListFragment;
+
+import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 
 /**
  * Created by denpa on 10/29/2017.
@@ -50,6 +55,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepList
     FragmentManager fm = getSupportFragmentManager();
     mStepListFragment = (StepListFragment) fm.findFragmentById(R.id.step_list_fragment);
 
+
     if (mRecipe == null){
       mStepListFragment.displayError(getString(R.string.cannot_load_recipe_error));
       return;
@@ -58,43 +64,65 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepList
     setTitle(mRecipe.name);
     mStepListFragment.bindRecipe(mRecipe);
     mStepDetailFragment = (StepDetailsFragment) fm.findFragmentById(R.id.step_detail_fragment);
-    if (mStepDetailFragment != null){
+    if (mStepDetailFragment != null) {
       mStepDetailFragment.setRecipe(mRecipe);
     }
+
+
+  }
+
+  @Override
+  protected void onStart() {
+    if (mStepDetailFragment == null){
+      FragmentManager fm = getSupportFragmentManager();
+      mStepDetailFragment = (StepDetailsFragment) fm.findFragmentById(R.id.step_detail_fragment);
+    }
+    super.onStart();
   }
 
   @Override
   protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
 
-    //There is some stink where on orientation change, the fragment is stuck in the manager
-    // Then we get some exception where fragment is not attached..
-    // after many hours, it seems the cleanest way is to never save this fragment into state.
-    if (mStepDetailFragment != null) {
-      FragmentManager fm = getSupportFragmentManager();
-      FragmentTransaction ft = fm.beginTransaction();
-      ft.remove(mStepDetailFragment);
-      ft.commit();
+    if(isChangingConfigurations() &&
+            getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT &&
+            mStepDetailFragment.getStepIndex() != -1){
+      OpenDetailActivity(mStepDetailFragment.getStepIndex());
     }
 
-    super.onSaveInstanceState(outState);
   }
 
   @Override
   public void onStepClicked(int position) {
 
-    if (mStepDetailFragment != null && mStepDetailFragment.isAdded()){
-      //has detail fragment
-      mStepDetailFragment.bindStep(position);
-    }else{
-      //does not have detail fragment
-      //load activity
-      Class destinationClass = StepDetailActivity.class;
-      Intent intentToStartDetailActivity = new Intent(this, destinationClass);
+    /*
+    LESSON TIME FOR ME:
+    the reason why fragments need to stay in the fragment manager after orientation change
+    is that in case of changing back, the state is preserved.
 
-      intentToStartDetailActivity.putExtra(StepDetailActivity.RECIPE_EXTRA, mRecipe);
-      intentToStartDetailActivity.putExtra(StepDetailActivity.STEP_INDEX_EXTRA, position );
-      this.startActivity(intentToStartDetailActivity);
+    So if you want to avoid calling a method on a fragment when it technically got created but is
+    not currently on the screen,
+    you should just check visibility.
+     */
+    if (mStepDetailFragment != null && mStepDetailFragment.isVisible()){
+      if (!mStepDetailFragment.shouldOpenFullActivity(position)){
+        mStepDetailFragment.bindStep(position);
+        return;
+      }
     }
+
+    //does not have detail fragment
+    //load activity
+    OpenDetailActivity(position);
+  }
+
+  private void OpenDetailActivity( int position){
+    Class destinationClass = StepDetailActivity.class;
+    Intent intentToStartDetailActivity = new Intent(this, destinationClass);
+
+    intentToStartDetailActivity.putExtra(StepDetailActivity.RECIPE_EXTRA, mRecipe);
+    intentToStartDetailActivity.putExtra(StepDetailActivity.STEP_INDEX_EXTRA, position );
+    this.startActivity(intentToStartDetailActivity);
   }
 
   @Override

@@ -30,6 +30,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by denpa on 9/23/2017.
  * fragment the shows the grid of recipes
@@ -38,11 +41,11 @@ import java.util.List;
 public class RecipeListFragment extends Fragment {
 
   private Context mContext;
-  private RecyclerView mRVRecipes;
   private FastItemAdapter<RecipeListItem> mFastAdapter;
-  private ProgressBar mPBLoading;
 
-  private TextView mErrorMessage;
+  @BindView(R.id.rv_recipe_list) RecyclerView mRVRecipes;
+  @BindView(R.id.pb_loading) ProgressBar mPBLoading;
+  @BindView(R.id.tv_error_message) TextView mErrorMessage;
 
 
   public RecipeListFragment() {
@@ -55,10 +58,7 @@ public class RecipeListFragment extends Fragment {
     View rootView = inflater.inflate(R.layout.fragment_recipe_list, container, false);
     mContext = getContext();
 
-    mRVRecipes = rootView.findViewById(R.id.rv_recipe_list);
-    mPBLoading = rootView.findViewById(R.id.pb_loading);
-
-    mErrorMessage  = rootView.findViewById(R.id.tv_error_message);
+    ButterKnife.bind(this, rootView);
 
     final GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, calculateNoOfColumns(mContext), GridLayoutManager.VERTICAL ,false );
     mRVRecipes.setLayoutManager(gridLayoutManager);
@@ -81,8 +81,7 @@ public class RecipeListFragment extends Fragment {
     });
 
     mRVRecipes.setAdapter(mFastAdapter);
-
-    showLoadingBar();
+    mRVRecipes.setHasFixedSize(true);
 
     return rootView;
   }

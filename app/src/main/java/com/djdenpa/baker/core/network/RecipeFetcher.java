@@ -6,6 +6,7 @@ import android.util.Log;
 import com.djdenpa.baker.core.Recipe;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class RecipeFetcher {
               JSONObject jRecipe = jRecipes.getJSONObject(i);
               result.add( Recipe.fromJSON(jRecipe));
             }
-          } catch (Exception e) {
+          } catch (JSONException e) {
             Log.d("ERROR", e.getMessage());
           }
         }

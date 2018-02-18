@@ -15,7 +15,6 @@ public class Step implements Parcelable {
   public String shortDescription;
   public String description;
   public String videoURL;
-  @SuppressWarnings("WeakerAccess")
   public String thumbnailURL;
 
   public Step(){

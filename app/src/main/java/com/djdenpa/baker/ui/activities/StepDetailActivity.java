@@ -68,6 +68,7 @@ public class StepDetailActivity
     outState.putInt(STEP_INDEX_STATE, mStepIndex);
   }
 
+
   @Override
   public void handleSetStepIndex(int index) {
     String titleTemplate = getString(R.string.step_detail_title_template);

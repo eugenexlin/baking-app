@@ -11,6 +11,9 @@ import com.mikepenz.fastadapter.items.AbstractItem;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by denpa on 10/15/2017.
  *
@@ -55,13 +58,12 @@ public class RecipeListItem extends AbstractItem<RecipeListItem, RecipeListItem.
   }
 
   static class ViewHolder extends RecyclerView.ViewHolder {
-    final TextView mName;
-    final TextView mServings;
+    @BindView(R.id.tv_recipe_name) TextView mName;
+    @BindView(R.id.tv_servings) TextView mServings;
 
     ViewHolder(View view) {
       super(view);
-      this.mName = view.findViewById(R.id.tv_recipe_name);
-      this.mServings = view.findViewById(R.id.tv_servings);
+      ButterKnife.bind(this,view);
     }
   }
 }

@@ -20,6 +20,7 @@ import com.djdenpa.baker.ui.fragments.RecipeListFragment;
 
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -124,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
               Recipe recipe = Recipe.fromJSON(jRecipe);
               result.add(recipe);
             }
-          } catch (Exception e) {
+          } catch (JSONException e) {
             Log.d("ERROR", e.getMessage());
           }
           mApplication.mRecipes = result;

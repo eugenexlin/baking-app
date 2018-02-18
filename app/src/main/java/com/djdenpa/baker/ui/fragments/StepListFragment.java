@@ -27,6 +27,9 @@ import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by denpa on 10/29/2017.
  *
@@ -40,11 +43,12 @@ public class StepListFragment extends Fragment {
 
   private Context mContext;
   private OnStepClickListener mCallback;
-  private TextView mErrorMessage;
+  @BindView(R.id.tv_error_message) TextView mErrorMessage;
+  @BindView(R.id.b_to_widget) Button mToWidgetButton;
   private FastItemAdapter<IngredientListItem> mIngredientFastAdapter;
   private FastItemAdapter<StepListItem> mStepFastAdapter;
-  private RecyclerView mRVIngredients;
-  private RecyclerView mRVSteps;
+  @BindView(R.id.rv_ingredients) RecyclerView mRVIngredients;
+  @BindView(R.id.rv_steps) RecyclerView mRVSteps;
 
   private boolean[] mIngredientSelection;
 
@@ -78,7 +82,8 @@ public class StepListFragment extends Fragment {
     View rootView = inflater.inflate(R.layout.fragment_recipe_details, container, false);
     mContext = getContext();
 
-    mRVIngredients = rootView.findViewById(R.id.rv_ingredients);
+    ButterKnife.bind(this, rootView );
+
     final LinearLayoutManager ingredientsLayoutManager = new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false){
       @Override
       public boolean canScrollVertically() {
@@ -94,8 +99,8 @@ public class StepListFragment extends Fragment {
     mIngredientFastAdapter.withEventHook(new IngredientListItem.CheckBoxClickEvent());
 
     mRVIngredients.setAdapter(mIngredientFastAdapter);
+    mRVIngredients.setNestedScrollingEnabled(false);
 
-    mRVSteps = rootView.findViewById(R.id.rv_steps);
     final LinearLayoutManager stepsLayoutManager = new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false){
       @Override
       public boolean canScrollVertically() {
@@ -112,6 +117,7 @@ public class StepListFragment extends Fragment {
       }
     });
     mRVSteps.setAdapter(mStepFastAdapter);
+    mRVSteps.setNestedScrollingEnabled(false);
 
     if(savedInstanceState != null){
       if (savedInstanceState.containsKey(INGREDIENT_CHECK_STATE)){
@@ -119,11 +125,7 @@ public class StepListFragment extends Fragment {
       }
     }
 
-    mErrorMessage  = rootView.findViewById(R.id.tv_error_message);
-
-
-    final Button button = rootView.findViewById(R.id.b_to_widget);
-    button.setOnClickListener(new View.OnClickListener() {
+    mToWidgetButton.setOnClickListener(new View.OnClickListener() {
       public void onClick(View v) {
         RecipeDetailsActivity activity = (RecipeDetailsActivity) getActivity();
         if (activity != null){

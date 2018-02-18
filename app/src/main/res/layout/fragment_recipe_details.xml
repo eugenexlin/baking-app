@@ -2,6 +2,7 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scroll"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -37,40 +38,8 @@
         android:textColor="@color/colorAccent"
         android:textSize="@dimen/header_size"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_ingredients"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="2dp"
-        android:scrollbars="none"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_ingredients"/>
-
-    <TextView
-        android:id="@+id/tv_steps"
-        android:layout_width="113dp"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="@string/steps_header"
-        android:textColor="@color/colorAccent"
-        android:textSize="@dimen/header_size"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rv_ingredients"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_steps"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:padding="2dp"
-        android:scrollbars="none"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_steps"/>
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <Button
         android:id="@+id/b_to_widget"
@@ -82,9 +51,63 @@
         android:paddingStart="@dimen/standard_padding"
         android:text="@string/save_to_widget_text"
         android:textColor="@color/button_text"
-        app:layout_constraintBottom_toTopOf="@+id/rv_ingredients"
-        app:layout_constraintStart_toEndOf="@+id/tv_ingredients"
-        app:layout_constraintTop_toTopOf="@+id/tv_ingredients"/>
+        app:layout_constraintBottom_toTopOf="@+id/tv_ingredients"
+        app:layout_constraintTop_toBottomOf="@+id/tv_ingredients"
+        app:layout_constraintStart_toEndOf="@+id/tv_ingredients"/>
+
+    <LinearLayout
+        android:id="@+id/ll_ingredients"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_ingredients">
+
+      <android.support.v7.widget.RecyclerView
+          android:id="@+id/rv_ingredients"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:padding="2dp"
+          android:scrollbars="none"
+          />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_steps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:padding="16dp"
+        android:text="@string/steps_header"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/header_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_ingredients"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/ll_steps"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_steps"
+        >
+
+      <android.support.v7.widget.RecyclerView
+          android:id="@+id/rv_steps"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:clickable="true"
+          android:focusable="true"
+          android:padding="2dp"
+          android:scrollbars="none"/>
+
+
+    </LinearLayout>
 
 
   </android.support.constraint.ConstraintLayout>

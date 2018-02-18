@@ -14,6 +14,9 @@ import com.mikepenz.fastadapter.listeners.ClickEventHook;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by denpa on 11/5/2017.
  *
@@ -104,11 +107,11 @@ public class IngredientListItem extends AbstractItem<IngredientListItem, Ingredi
 
 
   static class ViewHolder extends RecyclerView.ViewHolder {
-    private final CheckBox mCBIngredient;
+    @BindView(R.id.cb_ingredient) CheckBox mCBIngredient;
 
     private ViewHolder(View view) {
       super(view);
-      this.mCBIngredient = view.findViewById(R.id.cb_ingredient);
+      ButterKnife.bind(this, view);
     }
   }
 

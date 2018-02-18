@@ -1,6 +1,5 @@
 package com.djdenpa.baker.ui.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
@@ -42,6 +41,9 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by denpa on 11/5/2017.
  *
@@ -59,23 +61,21 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
 
   private Context mContext;
   private SetStepIndexHandler mSetStepIndexHandler;
-  private TextView mErrorMessage;
-  private TextView mStepShortDescription;
-  private TextView mStepDescription;
-  private ImageView mButtonPlaceholder;
-  private ScrollView mScrollView;
-  private Button mNextStepButton;
-  private FrameLayout mExoPlayerFrameLayout;
+  @BindView(R.id.tv_error_message) TextView mErrorMessage;
+  @BindView(R.id.tv_short_description)  TextView mStepShortDescription;
+  @BindView(R.id.tv_step_description)  TextView mStepDescription;
+  @BindView(R.id.iv_button_placeholder)  ImageView mButtonPlaceholder;
+  @BindView(R.id.sv_step_detail)  ScrollView mScrollView;
+  @BindView(R.id.b_next_step)  Button mNextStepButton;
+  @BindView(R.id.fl_exo_player)  FrameLayout mExoPlayerFrameLayout;
+  @BindView(R.id.pv_exo_player)  SimpleExoPlayerView mPlayerView ;
 
-  private View mRootView;
+  private SimpleExoPlayer mExoPlayer;
 
-
-  @SuppressLint("StaticFieldLeak")
-  private static SimpleExoPlayer mExoPlayer;
-
-  private SimpleExoPlayerView mPlayerView ;
   private static MediaSessionCompat mMediaSession;
   private PlaybackStateCompat.Builder mStateBuilder;
+
+  private View mRootView;
 
   private String mNowPlaying = "";
 
@@ -86,22 +86,16 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
     final View rootView = inflater.inflate(R.layout.fragment_step_details, container, false);
     mContext = getContext();
+
+    ButterKnife.bind(this, rootView);
+
+    initializeMediaSession();
 
     if (mContext instanceof SetStepIndexHandler){
       mSetStepIndexHandler = (SetStepIndexHandler) mContext;
     }
-
-    mErrorMessage = rootView.findViewById(R.id.tv_error_message);
-    mStepShortDescription =  rootView.findViewById(R.id.tv_short_description);
-    mStepDescription =  rootView.findViewById(R.id.tv_step_description);
-
-    mNextStepButton = rootView.findViewById(R.id.b_next_step);
-    mButtonPlaceholder = rootView.findViewById(R.id.iv_button_placeholder);
-
-    mScrollView = rootView.findViewById(R.id.sv_step_detail);
 
     mNextStepButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -113,19 +107,11 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
 
     mNextStepButton.setVisibility(View.GONE);
 
-    mExoPlayerFrameLayout = rootView.findViewById(R.id.fl_exo_player);
-    mPlayerView =  rootView.findViewById(R.id.pv_exo_player);
-
-    makeSureExoPlayerInitialized();
-
-    mPlayerView.setPlayer(mExoPlayer);
-
     mRootView = rootView;
 
     //hide it when the fragment is first made, because we want default nothing there
     // until a step is loaded
     mExoPlayerFrameLayout.setVisibility(View.GONE);
-
 
     if(savedInstanceState != null){
       if (savedInstanceState.containsKey(NOW_PLAYING_STATE)){
@@ -138,16 +124,20 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
 
   private void makeSureExoPlayerInitialized(){
 
-    if (mExoPlayer == null) {
-      // Create an instance of the ExoPlayer.
-      TrackSelector trackSelector = new DefaultTrackSelector();
-      LoadControl loadControl = new DefaultLoadControl();
-      mExoPlayer = ExoPlayerFactory.newSimpleInstance(mContext, trackSelector, loadControl);
+    if (mPlayerView.getPlayer() == null) {
+      if (mExoPlayer == null) {
+        // Create an instance of the ExoPlayer.
+        TrackSelector trackSelector = new DefaultTrackSelector();
+        LoadControl loadControl = new DefaultLoadControl();
+        mExoPlayer = ExoPlayerFactory.newSimpleInstance(mContext, trackSelector, loadControl);
 
-      // Set the ExoPlayer.EventListener to this activity.
-      mExoPlayer.addListener(this);
+        // Set the ExoPlayer.EventListener to this activity.
+        mExoPlayer.addListener(this);
 
+        mPlayerView.setPlayer(mExoPlayer);
+      }
       mPlayerView.setPlayer(mExoPlayer);
+
     }
 
   }
@@ -155,8 +145,7 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
   @Override
   public void onStart() {
     super.onStart();
-
-    initializeMediaSession();
+    mStepIndex = -1;
   }
 
   @Override
@@ -182,7 +171,10 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
       releasePlayer();
       mMediaSession.setActive(false);
     }
+  }
 
+  public int getStepIndex(){
+    return mStepIndex;
   }
 
   @Override
@@ -218,34 +210,42 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
     mRecipe = recipe;
   }
 
+  public boolean shouldOpenFullActivity(int requestedStep){
+    if (requestedStep == mStepIndex){
+      if (mExoPlayer != null){
+        return true;
+      }
+    }
+    return false;
+  }
+
   public void bindStep(int index){
-
-    if(index == mStepIndex){
-      return;
-    }
-
-    unloadStep();
-
-    if(mRecipe == null){
-      return;
-    }
 
     if(index >= mRecipe.steps().size() ){
       return;
     }
-
     Step step = mRecipe.steps().get(index);
 
-    //save index for next button
-    mStepIndex = index;
-    setHasNextStep(index < mRecipe.steps().size()-1);
+    if(index != mStepIndex){
 
-    if (mSetStepIndexHandler != null) {
-     mSetStepIndexHandler.handleSetStepIndex(index);
+      unloadStep();
+
+      if(mRecipe == null){
+        return;
+      }
+
+      //save index for next button
+      mStepIndex = index;
+      setHasNextStep(index < mRecipe.steps().size()-1);
+
+      if (mSetStepIndexHandler != null) {
+       mSetStepIndexHandler.handleSetStepIndex(index);
+      }
+
+      mStepShortDescription.setText(step.shortDescription);
+      mStepDescription.setText(step.description);
+
     }
-
-    mStepShortDescription.setText(step.shortDescription);
-    mStepDescription.setText(step.description);
 
     boolean showPlayer = false;
     try
@@ -266,9 +266,7 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
       mExoPlayerFrameLayout.setVisibility(View.VISIBLE);
       delayedResizeExoPlayer();
     }else{
-      if (mExoPlayer != null) {
-        mExoPlayer.stop();
-      }
+      releasePlayer();
       mExoPlayerFrameLayout.setVisibility(View.GONE);
     }
   }
@@ -326,17 +324,37 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
       // MySessionCallback has methods that handle callbacks from a media controller.
       mMediaSession.setCallback(new MySessionCallback());
 
-      // Start the Media Session since the activity is active.
-      mMediaSession.setActive(true);
-
     }
+
   }
 
+
+  @Override
+  public void onResume() {
+    super.onResume();
+
+    mMediaSession.setActive(true);
+    if( mExoPlayer != null) {
+      mExoPlayer.setPlayWhenReady(true);
+    }
+    makeSureExoPlayerInitialized();
+
+  }
+
+  @Override
+  public void onPause() {
+    super.onPause();
+
+    if( mExoPlayer != null) {
+      mExoPlayer.setPlayWhenReady(false);
+    }
+  }
 
   /**
    * Release ExoPlayer.
    */
   private void releasePlayer() {
+    mPlayerView.setPlayer(null);
     if (mExoPlayer != null) {
       mExoPlayer.stop();
       mExoPlayer.release();
@@ -408,11 +426,8 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
     String uriString = mediaUri.toString();
     //do not restart if binding the same thing
     //especially if changing orientation.
-    if(mNowPlaying.equals(uriString)){
-
-      if (mExoPlayer != null) {
-        mExoPlayer.setPlayWhenReady(true);
-      }
+    if(mNowPlaying.equals(uriString) && mExoPlayer != null){
+      mExoPlayer.setPlayWhenReady(true);
       return;
     }
 
