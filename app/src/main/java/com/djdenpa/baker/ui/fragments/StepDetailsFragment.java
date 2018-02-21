@@ -77,7 +77,7 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
   private View mRootView;
 
   private String mNowPlaying = "";
-  private String mPlaybackPosition = "";
+  private long mPlaybackPosition = 0L;
 
   public interface SetStepIndexHandler{
     void handleSetStepIndex(int index);
@@ -114,12 +114,12 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
     mExoPlayerFrameLayout.setVisibility(View.GONE);
 
     if(savedInstanceState != null){
-      if (savedInstanceState.containsKey(NOW_PLAYING_STATE)){
+      if (savedInstanceState.containsKey(NOW_PLAYING_STATE) && savedInstanceState.containsKey(PLAYBACK_POSITION)){
         mNowPlaying = savedInstanceState.getString(NOW_PLAYING_STATE);
+        mPlaybackPosition = savedInstanceState.getLong(PLAYBACK_POSITION);
+        restoreExoPlayer();
       }
-      if (savedInstanceState.containsKey(PLAYBACK_POSITION)){
-        mPlaybackPosition = savedInstanceState.getString(PLAYBACK_POSITION);
-      }
+
     }
 
     return rootView;
@@ -159,7 +159,6 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
       isOrientationChange = true;
     }
     if (isOrientationChange) {
-
       mExoPlayer.setPlayWhenReady(false);
       //this DOES pause the video if you put in sleep time..!
       //but otherwise it seems to not pause because it does not pause right away, not "READY"
@@ -168,7 +167,6 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
       //I then unfortunately get some video lag, while the audio keeps going.
       //That may or may not be what people want.
       //but this is for now not easily in my control as far as i know.
-
     }else{
       releasePlayer();
       mMediaSession.setActive(false);
@@ -183,7 +181,7 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
   public void onSaveInstanceState(@NonNull Bundle outState) {
     super.onSaveInstanceState(outState);
     outState.putString(NOW_PLAYING_STATE, mNowPlaying);
-    outState.putString(PLAYBACK_POSITION, mPlaybackPosition);
+    outState.putLong(PLAYBACK_POSITION, mExoPlayer.getCurrentPosition());
   }
 
   public void displayError(String errorMessage){
@@ -332,25 +330,28 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
 
   }
 
+  @Override
+  public void onPause() {
+    super.onPause();
+    if (mExoPlayer != null) {
+      mPlaybackPosition = mExoPlayer.getCurrentPosition();
+    }
+  }
 
   @Override
   public void onResume() {
     super.onResume();
 
-    mMediaSession.setActive(true);
-    if( mExoPlayer != null) {
-      mExoPlayer.setPlayWhenReady(true);
-    }
-    makeSureExoPlayerInitialized();
+    restoreExoPlayer();
 
   }
 
   @Override
-  public void onPause() {
-    super.onPause();
+  public void onStop() {
+    super.onStop();
 
     if( mExoPlayer != null) {
-      mExoPlayer.setPlayWhenReady(false);
+      releasePlayer();
     }
   }
 
@@ -450,5 +451,26 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
       mNowPlaying = uriString;
 
     }
+  }
+
+  private void restoreExoPlayer(){
+    if (mExoPlayer != null){
+      return;
+    }
+
+    makeSureExoPlayerInitialized();
+
+    Uri mediaUri = Uri.parse(mNowPlaying);
+
+    // Prepare the MediaSource.
+    String userAgent = Util.getUserAgent(mContext, "BakingApp");
+    MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
+            mContext, userAgent), new DefaultExtractorsFactory(), null, null);
+    mExoPlayer.prepare(mediaSource);
+
+    mExoPlayer.setPlayWhenReady(true);
+
+    mExoPlayer.seekTo(mPlaybackPosition);
+
   }
 }
