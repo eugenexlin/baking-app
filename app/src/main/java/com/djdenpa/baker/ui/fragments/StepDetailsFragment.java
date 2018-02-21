@@ -19,7 +19,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
 import com.djdenpa.baker.R;
 import com.djdenpa.baker.core.Recipe;
 import com.djdenpa.baker.core.Step;
@@ -40,7 +39,6 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -54,6 +52,7 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
 
   private static final String TAG = "STEP_DETAIL_TAG";
   private static final String NOW_PLAYING_STATE = "NOW_PLAYING_STATE";
+  private static final String PLAYBACK_POSITION = "PLAYBACK_POSITION";
 
   private Recipe mRecipe;
   //this is so it does not collide with index 0
@@ -78,6 +77,7 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
   private View mRootView;
 
   private String mNowPlaying = "";
+  private String mPlaybackPosition = "";
 
   public interface SetStepIndexHandler{
     void handleSetStepIndex(int index);
@@ -117,6 +117,9 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
       if (savedInstanceState.containsKey(NOW_PLAYING_STATE)){
         mNowPlaying = savedInstanceState.getString(NOW_PLAYING_STATE);
       }
+      if (savedInstanceState.containsKey(PLAYBACK_POSITION)){
+        mPlaybackPosition = savedInstanceState.getString(PLAYBACK_POSITION);
+      }
     }
 
     return rootView;
@@ -145,7 +148,6 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
   @Override
   public void onStart() {
     super.onStart();
-    mStepIndex = -1;
   }
 
   @Override
@@ -181,6 +183,7 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
   public void onSaveInstanceState(@NonNull Bundle outState) {
     super.onSaveInstanceState(outState);
     outState.putString(NOW_PLAYING_STATE, mNowPlaying);
+    outState.putString(PLAYBACK_POSITION, mPlaybackPosition);
   }
 
   public void displayError(String errorMessage){
@@ -221,12 +224,14 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
 
   public void bindStep(int index){
 
+
     if(index >= mRecipe.steps().size() ){
       return;
     }
     Step step = mRecipe.steps().get(index);
 
     if(index != mStepIndex){
+      mStepIndex = index;
 
       unloadStep();
 
@@ -235,7 +240,6 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
       }
 
       //save index for next button
-      mStepIndex = index;
       setHasNextStep(index < mRecipe.steps().size()-1);
 
       if (mSetStepIndexHandler != null) {

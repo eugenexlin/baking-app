@@ -23,7 +23,6 @@ import com.djdenpa.baker.service.IngredientListWidgetProvider;
 import com.djdenpa.baker.ui.fragments.StepDetailsFragment;
 import com.djdenpa.baker.ui.fragments.StepListFragment;
 
-import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 
 /**
  * Created by denpa on 10/29/2017.
@@ -84,10 +83,12 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepList
   protected void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
 
-    if(isChangingConfigurations() &&
-            getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT &&
-            mStepDetailFragment.getStepIndex() != -1){
-      OpenDetailActivity(mStepDetailFragment.getStepIndex());
+    if (mStepDetailFragment != null) {
+      if (isChangingConfigurations() &&
+              getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT &&
+              mStepDetailFragment.getStepIndex() != -1) {
+        OpenDetailActivity(mStepDetailFragment.getStepIndex());
+      }
     }
 
   }

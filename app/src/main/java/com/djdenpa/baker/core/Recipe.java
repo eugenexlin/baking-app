@@ -29,6 +29,7 @@ public class Recipe implements Parcelable {
   public int id;
   public String name;
   public String ingredientsJSON;
+  public String imageUrl;
   private LinkedList<Ingredient> mIngredients = null;
   public LinkedList<Ingredient> ingredients(){
     if (mIngredients == null) {
@@ -91,6 +92,7 @@ public class Recipe implements Parcelable {
     ingredientsJSON = in.readString();
     stepsJSON = in.readString();
     servings = in.readInt();
+    imageUrl = in.readString();
   }
 
   @Override
@@ -105,6 +107,7 @@ public class Recipe implements Parcelable {
     parcel.writeString(ingredientsJSON);
     parcel.writeString(stepsJSON);
     parcel.writeInt(servings);
+    parcel.writeString(imageUrl);
   }
 
   public static final Creator<Recipe> CREATOR = new Creator<Recipe>() {
@@ -127,7 +130,7 @@ public class Recipe implements Parcelable {
       result.ingredientsJSON = jRecipe.getString("ingredients");
       result.stepsJSON = jRecipe.getString("steps");
       result.servings = jRecipe.getInt("servings");
-      //result.image
+      result.imageUrl = jRecipe.getString("image");
     } catch (JSONException e) {
       e.printStackTrace();
     }

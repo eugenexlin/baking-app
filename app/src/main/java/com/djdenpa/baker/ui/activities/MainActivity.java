@@ -139,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
         Log.d("ERROR", t.getMessage());
+        mRecipeListFragment.displayError("There has been an error loading recipes. Try again later.");
         mRecipeListFragment.hideLoadingBar();
       }
     });

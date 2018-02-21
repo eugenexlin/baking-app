@@ -1,24 +1,22 @@
 package com.djdenpa.baker.ui.adapters;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
-import android.support.annotation.AnyRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.djdenpa.baker.R;
 import com.djdenpa.baker.core.Step;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.squareup.picasso.Picasso;
-
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.djdenpa.baker.core.Utils.isImage;
+import static com.djdenpa.baker.core.Utils.getUriToDrawable;
 
 /**
  * Created by denpa on 11/5/2017.
@@ -49,21 +47,6 @@ public class StepListItem extends AbstractItem<StepListItem, StepListItem.ViewHo
     return R.layout.item_recipe_step;
   }
 
-  private final String[] imageFileExtensions =  new String[] {"jpg", "png", "gif", "jpeg"};
-
-  public boolean isImage(String path){
-    if (path == null){
-      return false;
-    }
-    for (String extension : imageFileExtensions)
-    {
-      if (path.toLowerCase().endsWith(extension))
-      {
-        return true;
-      }
-    }
-    return false;
-  }
 
   //The logic to bind your data to the view
   @Override
@@ -77,7 +60,7 @@ public class StepListItem extends AbstractItem<StepListItem, StepListItem.ViewHo
     if (isImage(mStep.thumbnailURL) && URLUtil.isValidUrl(mStep.thumbnailURL)) {
        thumbUri = Uri.parse(mStep.thumbnailURL);
     }else{
-      thumbUri = getUriToDrawable(R.drawable.image_placeholder);
+      thumbUri = getUriToDrawable(mContext, R.drawable.image_placeholder);
 
       //seems to work
       //thumbUri = Uri.parse("https://i.imgur.com/G762oxF.png");
@@ -90,14 +73,6 @@ public class StepListItem extends AbstractItem<StepListItem, StepListItem.ViewHo
       public void onError() {
       }
     });
-  }
-
-  public final Uri getUriToDrawable(@AnyRes int drawableId) {
-    Uri imageUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
-            "://" + mContext.getResources().getResourcePackageName(drawableId)
-            + '/' + mContext.getResources().getResourceTypeName(drawableId)
-            + '/' + mContext.getResources().getResourceEntryName(drawableId) );
-    return imageUri;
   }
 
   static class ViewHolder extends RecyclerView.ViewHolder {

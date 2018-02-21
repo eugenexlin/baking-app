@@ -93,6 +93,12 @@ public class RecipeListFragment extends Fragment {
     mPBLoading.setVisibility(View.GONE);
   }
 
+
+  public void displayError(String errorMessage){
+    mErrorMessage.setVisibility(View.VISIBLE);
+    mErrorMessage.setText(errorMessage);
+  }
+
   private static int calculateNoOfColumns(Context context) {
     DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
     //here is a magical formula to calculate number of columns we should display
