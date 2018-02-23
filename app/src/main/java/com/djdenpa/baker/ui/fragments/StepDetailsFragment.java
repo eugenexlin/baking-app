@@ -154,23 +154,19 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
   public void onDestroyView() {
     super.onDestroyView();
 
-    boolean isOrientationChange = false;
-    if(mContext instanceof Activity && ((Activity)mContext).isChangingConfigurations()){
-      isOrientationChange = true;
-    }
-    if (isOrientationChange) {
-      mExoPlayer.setPlayWhenReady(false);
-      //this DOES pause the video if you put in sleep time..!
-      //but otherwise it seems to not pause because it does not pause right away, not "READY"
-      //and by then the activity is back up and it is flagged to be playing again.
+    //this block of code is no longer necessary after implementing always releasing and restoring play position.
 
-      //I then unfortunately get some video lag, while the audio keeps going.
-      //That may or may not be what people want.
-      //but this is for now not easily in my control as far as i know.
-    }else{
-      releasePlayer();
-      mMediaSession.setActive(false);
-    }
+//    boolean isOrientationChange = false;
+//    if(mContext instanceof Activity && ((Activity)mContext).isChangingConfigurations()){
+//      isOrientationChange = true;
+//    }
+//    if (isOrientationChange) {
+//
+//      //mExoPlayer.setPlayWhenReady(false);
+//    }else{
+//      releasePlayer();
+//      mMediaSession.setActive(false);
+//    }
   }
 
   public int getStepIndex(){

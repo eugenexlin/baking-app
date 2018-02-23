@@ -1,68 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/scroll"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
-  <android.support.constraint.ConstraintLayout
-      android:layout_width="match_parent"
+
+  <android.support.design.widget.FloatingActionButton
+      android:id="@+id/b_to_widget"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:padding="@dimen/margin_half_size"
-      >
+      android:layout_marginEnd="16dp"
+      android:layout_marginTop="16dp"
+      android:background="@color/colorAccent"
+      android:src="@drawable/ic_save_24dp"
+      android:textColor="@color/button_text"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
 
-    <TextView
-        android:id="@+id/tv_error_message"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white_accent_background"
-        android:elevation="3dp"
-        android:padding="@dimen/standard_padding"
-        android:text="@string/network_error_message"
-        android:textColor="#f00"
-        android:textSize="@dimen/error_text_size"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+  <ScrollView
+      android:id="@+id/sv_step_list"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:fillViewport="true"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintBottom_toBottomOf="parent">
 
-
-    <TextView
-        android:id="@+id/tv_ingredients"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="@string/ingredients_header"
-        android:textColor="@color/colorAccent"
-        android:textSize="@dimen/header_size"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
-
-    <Button
-        android:id="@+id/b_to_widget"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:background="@color/colorAccent"
-        android:paddingEnd="@dimen/standard_padding"
-        android:paddingStart="@dimen/standard_padding"
-        android:text="@string/save_to_widget_text"
-        android:textColor="@color/button_text"
-        app:layout_constraintBottom_toTopOf="@+id/tv_ingredients"
-        app:layout_constraintTop_toBottomOf="@+id/tv_ingredients"
-        app:layout_constraintStart_toEndOf="@+id/tv_ingredients"/>
 
     <LinearLayout
         android:id="@+id/ll_ingredients"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_ingredients">
+        android:orientation="vertical">
+
+      <TextView
+          android:id="@+id/tv_error_message"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:background="@color/white_accent_background"
+          android:elevation="3dp"
+          android:padding="@dimen/standard_padding"
+          android:text="@string/network_error_message"
+          android:textColor="#f00"
+          android:textSize="@dimen/error_text_size"
+          android:visibility="gone"/>
+
+
+      <TextView
+          android:id="@+id/tv_ingredients"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:padding="16dp"
+          android:text="@string/ingredients_header"
+          android:textColor="@color/colorAccent"
+          android:textSize="@dimen/header_size"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"/>
+
 
       <android.support.v7.widget.RecyclerView
           android:id="@+id/rv_ingredients"
@@ -72,30 +70,19 @@
           android:scrollbars="none"
           />
 
-    </LinearLayout>
+      <TextView
+          android:id="@+id/tv_steps"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="6dp"
+          android:padding="16dp"
+          android:text="@string/steps_header"
+          android:textColor="@color/colorAccent"
+          android:textSize="@dimen/header_size"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/ll_ingredients"
+          />
 
-    <TextView
-        android:id="@+id/tv_steps"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:padding="16dp"
-        android:text="@string/steps_header"
-        android:textColor="@color/colorAccent"
-        android:textSize="@dimen/header_size"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_ingredients"
-        />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/ll_steps"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_steps"
-        >
 
       <android.support.v7.widget.RecyclerView
           android:id="@+id/rv_steps"
@@ -109,7 +96,6 @@
 
     </LinearLayout>
 
+  </ScrollView>
 
-  </android.support.constraint.ConstraintLayout>
-
-</ScrollView>
+</android.support.constraint.ConstraintLayout>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +12,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.djdenpa.baker.R;
@@ -44,11 +47,14 @@ public class StepListFragment extends Fragment {
   private Context mContext;
   private OnStepClickListener mCallback;
   @BindView(R.id.tv_error_message) TextView mErrorMessage;
-  @BindView(R.id.b_to_widget) Button mToWidgetButton;
+  @BindView(R.id.b_to_widget) FloatingActionButton mToWidgetButton;
   private FastItemAdapter<IngredientListItem> mIngredientFastAdapter;
   private FastItemAdapter<StepListItem> mStepFastAdapter;
   @BindView(R.id.rv_ingredients) RecyclerView mRVIngredients;
   @BindView(R.id.rv_steps) RecyclerView mRVSteps;
+
+  @BindView(R.id.sv_step_list) ScrollView mScrollView;
+  //@BindView(R.id.fl_hack) FrameLayout mFLHack;
 
   private boolean[] mIngredientSelection;
 
@@ -84,22 +90,6 @@ public class StepListFragment extends Fragment {
 
     ButterKnife.bind(this, rootView );
 
-    final LinearLayoutManager ingredientsLayoutManager = new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false){
-      @Override
-      public boolean canScrollVertically() {
-        return false;
-      }
-    };
-    mRVIngredients.setLayoutManager(ingredientsLayoutManager);
-
-    mIngredientFastAdapter = new FastItemAdapter<>();
-    //configure our fastAdapter
-
-    mIngredientFastAdapter.withSelectable(true);
-    mIngredientFastAdapter.withEventHook(new IngredientListItem.CheckBoxClickEvent());
-
-    mRVIngredients.setAdapter(mIngredientFastAdapter);
-    mRVIngredients.setNestedScrollingEnabled(false);
 
     final LinearLayoutManager stepsLayoutManager = new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false){
       @Override
@@ -117,7 +107,23 @@ public class StepListFragment extends Fragment {
       }
     });
     mRVSteps.setAdapter(mStepFastAdapter);
+    mRVSteps.setHasFixedSize(true);
     mRVSteps.setNestedScrollingEnabled(false);
+
+    final LinearLayoutManager ingredientsLayoutManager = new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false){
+      @Override
+      public boolean canScrollVertically() {
+        return false;
+      }
+    };
+    mRVIngredients.setLayoutManager(ingredientsLayoutManager);
+    mIngredientFastAdapter = new FastItemAdapter<>();
+    mIngredientFastAdapter.withSelectable(true);
+    mIngredientFastAdapter.withEventHook(new IngredientListItem.CheckBoxClickEvent());
+    mRVIngredients.setAdapter(mIngredientFastAdapter);
+    mRVIngredients.setHasFixedSize(true);
+    mRVIngredients.setNestedScrollingEnabled(false);
+
 
     if(savedInstanceState != null){
       if (savedInstanceState.containsKey(INGREDIENT_CHECK_STATE)){
@@ -130,6 +136,20 @@ public class StepListFragment extends Fragment {
         RecipeDetailsActivity activity = (RecipeDetailsActivity) getActivity();
         if (activity != null){
           activity.saveCurrentIngredientListToWidget();
+        }
+      }
+    });
+
+
+
+    mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+      @Override
+      public void onScrollChanged() {
+        int scrollY = mScrollView.getScrollY(); // For ScrollView
+        if(scrollY <= 0) {
+          mToWidgetButton.show();
+        }else{
+          mToWidgetButton.hide();
         }
       }
     });
@@ -156,8 +176,22 @@ public class StepListFragment extends Fragment {
 
   public void bindRecipe(Recipe mRecipe) {
 
-    //bind ingredients
+    mStepFastAdapter.clear();
     mIngredientFastAdapter.clear();
+    //mFLHack.setVisibility(View.VISIBLE);
+
+    //bind steps
+    List<StepListItem> steps = new ArrayList<>();
+    try {
+      for (Step step : mRecipe.steps()) {
+        steps.add(new StepListItem(step, mContext));
+      }
+    } catch (Exception e) {
+      Log.d("ERROR", e.getMessage());
+    }
+    mStepFastAdapter.add(steps);
+
+    //bind ingredients
     List<IngredientListItem> ingredients = new ArrayList<>();
     try {
       for (Ingredient ingredient : mRecipe.ingredients()) {
@@ -173,18 +207,7 @@ public class StepListFragment extends Fragment {
     }
     mIngredientFastAdapter.add(ingredients);
 
-
-    //bind steps
-    mStepFastAdapter.clear();
-    List<StepListItem> steps = new ArrayList<>();
-    try {
-      for (Step step : mRecipe.steps()) {
-        steps.add(new StepListItem(step, mContext));
-      }
-    } catch (Exception e) {
-      Log.d("ERROR", e.getMessage());
-    }
-    mStepFastAdapter.add(steps);
+    //mFLHack.setVisibility(View.GONE);
 
   }
 
